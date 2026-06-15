@@ -1,0 +1,22 @@
+<section class="tsq-hero shopify-section" id="tsq-hero">
+  <div class="tsq-hero__content">
+    {%- if settings.logo != blank -%}
+      <img src="{{ settings.logo | image_url: width: 160 }}" alt="{{ shop.name }}" class="tsq-hero__logo">
+    {%- endif -%}
+    <span class="tsq-hero__eyebrow">Arabian Perfumery · Born in Australia</span>
+    <h1>Where Luxury<br><em>Meets Scent</em></h1>
+    <p>Discover the world's finest Middle Eastern fragrances, hand-decanted so you can experience true luxury from just $15.</p>
+    <div class="tsq-hero__buttons">
+      <a href="/collections/all-decants" class="btn">Shop Decants</a>
+      <a href="/collections/all" class="btn btn--ghost">Explore All</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "TSQ Hero",
+  "tag": "div",
+  "class": "shopify-section"
+}
+{% endschema %}

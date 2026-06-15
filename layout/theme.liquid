@@ -39,8 +39,7 @@
 
     {{ content_for_header }}
     {% # theme-check-enable RemoteAsset %}
-    {{ 'scent-quarter-luxury.css' | asset_url | stylesheet_tag }}
-    {{ 'tsq-readability-patch.css' | asset_url | stylesheet_tag }}
+    {{ 'scent-quarter.css' | asset_url | stylesheet_tag }}
     {{ 'tsq-fragrantica.css' | asset_url | stylesheet_tag }}
   </head>
 
@@ -124,6 +123,37 @@
     <script src="{{ 'tsq-fragrantica.js' | asset_url }}" defer></script>
     <script src="{{ 'tsq-nav.js' | asset_url }}" defer></script>
     <script src="{{ 'tsq-search.js' | asset_url }}" defer></script>
-    {% section 'tsq-first-order-popup' %}
+    {% unless customer %}
+    <div id="tsq-popup" style="display:none;" role="dialog" aria-modal="true" aria-label="Welcome offer">
+      <div class="box">
+        {%- if settings.logo != blank -%}
+          <img src="{{ settings.logo | image_url: width: 120 }}" alt="{{ shop.name }}" class="logo">
+        {%- endif -%}
+        <span class="eyebrow">Welcome to The Scent Quarter</span>
+        <h2>10% Off<br>Your First Order</h2>
+        <p>Discover the world's finest Arabian fragrances — from just $15 as a decant.</p>
+        <div class="code">WELCOME10</div>
+        <a href="/collections/all" class="btn" style="display:block;width:100%;margin-bottom:12px;" onclick="tsqDismissPopup()">Shop Now</a>
+        <button class="dismiss" onclick="tsqDismissPopup()">No thanks, I'll pay full price</button>
+      </div>
+    </div>
+    <script>
+      function tsqDismissPopup() {
+        document.getElementById('tsq-popup').style.display = 'none';
+        try { localStorage.setItem('tsq-popup', '1'); } catch(e) {}
+      }
+      (function() {
+        try { if (localStorage.getItem('tsq-popup')) return; } catch(e) {}
+        if (window.location.pathname !== '/') return;
+        setTimeout(function() {
+          var el = document.getElementById('tsq-popup');
+          if (el) el.style.display = 'flex';
+        }, 3200);
+      })();
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') tsqDismissPopup();
+      });
+    </script>
+    {% endunless %}
   </body>
 </html>

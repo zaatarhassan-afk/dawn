@@ -9,266 +9,37 @@
  */
 {
   "sections": {
-    "tsq_hero": {
+    "tsq-hero": {
       "type": "tsq-hero",
-      "settings": {
-        "eyebrow": "The World's Finest Arabian Perfumery",
-        "headline": "Discover the Art of Arabian Fragrance",
-        "subheading": "Luxury scents from the world's most prestigious Middle Eastern fragrance houses.",
-        "primary_button_label": "SHOP FRAGRANCES",
-        "primary_button_link": "shopify://collections/all",
-        "secondary_button_label": "EXPLORE COLLECTIONS",
-        "secondary_button_link": "shopify://collections"
-      }
-    },
-    "tsq_hero_carousel": {
-      "type": "tsq-hero-carousel",
-      "settings": {
-        "eyebrow": "New & Trending",
-        "title": "Featured Fragrances",
-        "collection_handle": "frontpage"
-      }
-    },
-    "tsq_trust_bar": {
-      "type": "tsq-trust-bar",
-      "settings": {
-        "item1_label": "Authentic Fragrances",
-        "item1_sub": "100% genuine products",
-        "item2_label": "Fast Australian Shipping",
-        "item2_sub": "Express & standard delivery",
-        "item3_label": "Premium Selection",
-        "item3_sub": "Curated luxury fragrances",
-        "item4_label": "Secure Checkout",
-        "item4_sub": "Encrypted & safe payments"
-      }
-    },
-    "tsq_brands": {
-      "type": "tsq-brands",
       "settings": {}
     },
-    "tsq_collections": {
-      "type": "tsq-collections-grid",
-      "settings": {
-        "title": "Shop by Collection"
-      }
+    "tsq-tiles": {
+      "type": "tsq-collection-tiles",
+      "settings": {}
     },
-    "tsq_featured_products": {
+    "tsq-featured": {
       "type": "tsq-featured-products",
-      "settings": {
-        "eyebrow": "Our Selection",
-        "title": "Featured Fragrances",
-        "max_products": 8,
-        "show_view_all": true,
-        "view_all_label": "VIEW ALL FRAGRANCES"
-      }
+      "settings": {}
     },
-    "product_list_lattafa": {
-      "type": "product-list",
-      "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "Header",
-          "static": true,
-          "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_lattafa": {
-              "type": "_product-list-text",
-              "name": "Collection title",
-              "settings": {
-                "text": "<h3>The Lattafa Edit</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-heading--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground-heading)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_lattafa": {
-              "type": "_product-list-button",
-              "name": "View all",
-              "settings": {
-                "label": "View Lattafa Collection",
-                "open_in_new_tab": false,
-                "style_class": "link",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_lattafa",
-            "product_list_button_lattafa"
-          ]
-        },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "Product card",
-          "static": true,
-          "settings": {
-            "product_card_gap": 4,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 8,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_lat": {
-              "type": "_product-card-gallery",
-              "name": "Media",
-              "settings": {
-                "image_ratio": "square",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_lat": {
-              "type": "product-title",
-              "name": "Title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-heading--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 8,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_lat": {
-              "type": "price",
-              "name": "Price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "0.9rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "color": "var(--color-foreground)",
-                "padding-block-start": 4,
-                "padding-block-end": 4,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_lat",
-            "product_title_lat",
-            "price_lat"
-          ]
-        }
-      },
-      "name": "The Lattafa Edit",
-      "settings": {
-        "collection": "lattafa",
-        "layout_type": "carousel",
-        "carousel_on_mobile": true,
-        "max_products": 8,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "44cqw",
-        "columns_gap": 16,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "circle",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 60,
-        "padding-block-end": 60
-      }
+    "tsq-story": {
+      "type": "tsq-story",
+      "settings": {}
     },
-    "tsq_heritage": {
+    "tsq-brands": {
+      "type": "tsq-brand-spotlight",
+      "settings": {}
+    },
+    "tsq-heritage": {
       "type": "tsq-heritage",
       "settings": {}
     }
   },
   "order": [
-    "tsq_hero",
-    "tsq_hero_carousel",
-    "tsq_trust_bar",
-    "tsq_brands",
-    "tsq_collections",
-    "tsq_featured_products",
-    "product_list_lattafa",
-    "tsq_heritage"
+    "tsq-hero",
+    "tsq-tiles",
+    "tsq-featured",
+    "tsq-story",
+    "tsq-brands",
+    "tsq-heritage"
   ]
 }

@@ -1,0 +1,55 @@
+<div class="shopify-section" style="background:var(--tsq-obsidian,#0D0D0D);padding:90px 0;">
+  <div style="text-align:center;margin-bottom:48px;padding:0 20px;">
+    <span class="tsq-eyebrow">Shop by Category</span>
+    <div class="tsq-divider"></div>
+    <h2>Explore the Collection</h2>
+  </div>
+
+  <div class="tsq-tiles-grid">
+    {%- comment -%} Gender / decant tiles — pull first product image from collection {%- endcomment -%}
+    {%- assign gender_handles = "masculine,feminine,unisex,all-decants" | split: "," -%}
+    {%- assign gender_labels  = "Men's Fragrances,Women's Fragrances,Unisex,All Decants" | split: "," -%}
+    {%- for i in (0..3) -%}
+      {%- assign col = collections[gender_handles[i]] -%}
+      {%- if col and col.products.size > 0 -%}
+        <a href="{{ col.url }}" class="tsq-tile">
+          <img src="{{ col.products.first.featured_image | image_url: width: 800 }}"
+               alt="{{ gender_labels[i] }}" loading="lazy">
+          <div class="tsq-tile__overlay">
+            <span class="tsq-tile__label">{{ gender_labels[i] }}</span>
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%} Note-based tiles — lifestyle photography {%- endcomment -%}
+    <a href="/collections/oud" class="tsq-tile">
+      <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80" alt="Oud Collection" loading="lazy">
+      <div class="tsq-tile__overlay"><span class="tsq-tile__label">Oud Collection</span></div>
+    </a>
+    <a href="/collections/fresh-aquatic" class="tsq-tile">
+      <img src="https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=800&q=80" alt="Fresh & Aquatic" loading="lazy">
+      <div class="tsq-tile__overlay"><span class="tsq-tile__label">Fresh &amp; Aquatic</span></div>
+    </a>
+    <a href="/collections/oriental-amber" class="tsq-tile">
+      <img src="https://images.unsplash.com/photo-1611604548018-d56bbd85d681?w=800&q=80" alt="Oriental & Amber" loading="lazy">
+      <div class="tsq-tile__overlay"><span class="tsq-tile__label">Oriental &amp; Amber</span></div>
+    </a>
+    <a href="/collections/floral-rose" class="tsq-tile">
+      <img src="https://images.unsplash.com/photo-1490750967868-88df5691f2b6?w=800&q=80" alt="Floral & Rose" loading="lazy">
+      <div class="tsq-tile__overlay"><span class="tsq-tile__label">Floral &amp; Rose</span></div>
+    </a>
+    <a href="/collections/gourmand-sweet" class="tsq-tile">
+      <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&q=80" alt="Gourmand & Sweet" loading="lazy">
+      <div class="tsq-tile__overlay"><span class="tsq-tile__label">Gourmand &amp; Sweet</span></div>
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "TSQ Collection Tiles",
+  "tag": "div",
+  "class": "shopify-section"
+}
+{% endschema %}
