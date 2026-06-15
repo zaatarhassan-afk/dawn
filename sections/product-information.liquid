@@ -1,0 +1,720 @@
+
+
+<script type="application/ld+json">
+  {{ closest.product | structured_data }}
+</script>
+
+{% capture media_gallery %}
+  {%- content_for 'block',
+    type: '_product-media-gallery',
+    id: 'media-gallery',
+    closest.product: closest.product
+  -%}
+{% endcapture %}
+
+{% capture product_details %}
+  {% content_for 'block',
+    type: '_product-details',
+    id: 'product-details',
+    closest.product: closest.product
+  %}
+{% endcapture %}
+
+{% capture additional_blocks %}
+  {% content_for 'blocks' %}
+{% endcapture %}
+
+{% if section.settings.enable_sticky_add_to_cart %}
+  {% liquid
+    assign current_variant = product.selected_or_first_available_variant
+    # Get the initial quantity based on quantity rules
+    assign initial_quantity = current_variant.quantity_rule.min | default: 1
+  %}
+
+  <sticky-add-to-cart
+    class="sticky-add-to-cart"
+    data-variant-available="{{ current_variant.available }}"
+    data-product-id="{{ product.id }}"
+    data-current-variant-id="{{ current_variant.id }}"
+    data-initial-quantity="{{ initial_quantity }}"
+    data-default-variant-title="{{ 'products.product.default_title' | t }}"
+  >
+    <div
+      class="sticky-add-to-cart__bar color-{{ settings.popover_color_scheme }}"
+      data-stuck="false"
+      ref="stickyBar"
+      role="region"
+      aria-label="{{ 'products.product.sticky_add_to_cart' | t }}"
+    >
+      {% liquid
+        assign image_to_show = current_variant.featured_image | default: product.featured_image
+      %}
+      {% if image_to_show %}
+        <div
+          class="sticky-add-to-cart__image"
+        >
+          {% assign image_alt = image_to_show.alt | default: product.title | escape %}
+          {{
+            image_to_show
+            | image_url: width: 120
+            | image_tag:
+              loading: 'lazy',
+              alt: image_alt,
+              class: 'sticky-add-to-cart__image-img',
+              data-testid: 'sticky-product-image',
+              srcset: null,
+              sizes: null,
+              ref: 'productImage'
+          }}
+        </div>
+      {% endif %}
+
+      {% liquid
+        assign has_single_option = false
+        if product.has_only_default_variant != true and product.options.size == 1
+          assign has_single_option = true
+        endif
+
+        if image_to_show == blank
+          assign has_image = false
+        else
+          assign has_image = true
+        endif
+      %}
+      <div
+        class="sticky-add-to-cart__info"
+        data-has-image="{{ has_image }}"
+        data-singleton="{{ product.has_only_default_variant }}"
+        data-single-option="{{ has_single_option }}"
+      >
+        <p
+          class="sticky-add-to-cart__title"
+          data-testid="sticky-product-title"
+        >
+          {{ product.title | escape }}
+        </p>
+        <div
+          class="sticky-add-to-cart__variant"
+          data-testid="sticky-variant-title"
+          {% if product.has_only_default_variant %}
+            style="display: none;"
+          {% endif %}
+        >
+          {% unless product.has_only_default_variant %}
+            {% if current_variant != blank %}
+              {% assign variant_title = current_variant.title | escape %}
+            {% endif %}
+            {{ variant_title }}
+          {% endunless %}
+        </div>
+      </div>
+
+      <div
+        class="sticky-add-to-cart__price"
+        data-testid="sticky-price-display"
+      >
+        {% render 'price', product_resource: product, show_sale_price_first: true %}
+      </div>
+
+      <button
+        type="button"
+        class="sticky-add-to-cart__button add-to-cart-button button"
+        ref="addToCartButton"
+        on:click="/handleAddToCartClick"
+        {% unless current_variant.available %}
+          disabled
+        {% endunless %}
+      >
+        <span
+          class="add-to-cart-text"
+        >
+          {% if current_variant.available %}
+            <span class="svg-wrapper add-to-cart-icon">
+              {{- 'icon-add-to-cart.svg' | inline_asset_content -}}
+            </span>
+          {% endif %}
+          <span class="add-to-cart-text__content">
+            <span>
+              {%- if current_variant.available -%}
+                {{- 'products.product.add_to_cart' | t -}}
+              {%- elsif current_variant == blank -%}
+                {{- 'products.product.unavailable' | t -}}
+              {%- else -%}
+                {{- 'products.product.sold_out' | t -}}
+              {%- endif -%}
+            </span>
+            <span
+              ref="quantityDisplay"
+              {% if current_variant.available and initial_quantity > 1 %}
+                style="display: inline;"
+              {% else %}
+                style="display: none;"
+              {% endif %}
+            >
+              {{- ' (' -}}
+              <span ref="quantityNumber">{{- initial_quantity -}}</span>
+              {{- ')' -}}
+            </span>
+          </span>
+        </span>
+        <span class="add-to-cart__added">
+          <span class="svg-wrapper add-to-cart__added-icon">
+            {{- 'icon-checkmark-burst.svg' | inline_asset_content -}}
+          </span>
+        </span>
+      </button>
+    </div>
+  </sticky-add-to-cart>
+{% endif %}
+
+{% render 'product-information-content',
+  product_media_size: closest.product.media.size,
+  section_id: section.id,
+  settings: section.settings,
+  media_gallery: media_gallery,
+  product_details: product_details,
+  additional_blocks: additional_blocks
+%}
+
+{%- comment -%} ══ TSQ PRODUCT ENHANCEMENTS ══ {%- endcomment -%}
+{%- liquid
+  assign tsq_rating     = product.metafields.tsq.rating.value
+  assign tsq_votes      = product.metafields.tsq.votes.value
+  assign tsq_top        = product.metafields.tsq.top_notes.value
+  assign tsq_heart      = product.metafields.tsq.heart_notes.value
+  assign tsq_base       = product.metafields.tsq.base_notes.value
+  assign tsq_reviews    = product.metafields.tsq.reviews.value
+-%}
+
+{%- comment -%}── TRUST SECTION ──{%- endcomment -%}
+<div class="tsq-trust" style="max-width:var(--page-width,1200px);margin:0 auto;padding:0 20px;">
+  <div class="tsq-trust__item">
+    <svg class="tsq-trust__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"/></svg>
+    <div>
+      <span class="tsq-trust__label">Authenticity Guaranteed</span>
+      <span class="tsq-trust__desc">100% genuine, sourced directly from authorised distributors.</span>
+    </div>
+  </div>
+  <div class="tsq-trust__item">
+    <svg class="tsq-trust__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/></svg>
+    <div>
+      <span class="tsq-trust__label">Send as a Gift</span>
+      <span class="tsq-trust__desc">Add a gift message at checkout. Presented beautifully.</span>
+    </div>
+  </div>
+  <div class="tsq-trust__item">
+    <svg class="tsq-trust__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+    <div>
+      <span class="tsq-trust__label">Confirmed Within 24 Hours</span>
+      <span class="tsq-trust__desc">Every order processed and confirmed. Fast AU dispatch.</span>
+    </div>
+  </div>
+</div>
+
+{%- comment -%}── FRAGRANCE NOTES ──{%- endcomment -%}
+{%- if tsq_top or tsq_heart or tsq_base -%}
+<div class="tsq-notes" style="max-width:var(--page-width,1200px);margin:0 auto;padding-left:20px;padding-right:20px;">
+  <p class="tsq-notes__title">Fragrance Notes</p>
+  {%- if tsq_top -%}
+    <div class="tsq-notes__row"><span class="tsq-notes__label">Top</span><span class="tsq-notes__values">{{ tsq_top }}</span></div>
+  {%- endif -%}
+  {%- if tsq_heart -%}
+    <div class="tsq-notes__row"><span class="tsq-notes__label">Heart</span><span class="tsq-notes__values">{{ tsq_heart }}</span></div>
+  {%- endif -%}
+  {%- if tsq_base -%}
+    <div class="tsq-notes__row"><span class="tsq-notes__label">Base</span><span class="tsq-notes__values">{{ tsq_base }}</span></div>
+  {%- endif -%}
+</div>
+{%- endif -%}
+
+{%- comment -%}── REVIEWS ──{%- endcomment -%}
+<div class="tsq-reviews-section" data-product-id="{{ product.id }}" data-reviews-json="{{ tsq_reviews | escape }}">
+  <div class="tsq-reviews-inner">
+    <div class="tsq-reviews-header">
+      <h2 class="tsq-reviews-title">Customer Reviews</h2>
+    </div>
+    <div class="tsq-reviews-grid" id="tsq-reviews-grid-{{ product.id }}">
+      <p style="color:rgba(250,247,242,0.35);font-family:'Lora',serif;font-size:0.9rem;">Loading reviews…</p>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  var el = document.getElementById('tsq-reviews-grid-{{ product.id }}');
+  if (!el) return;
+  var raw = document.querySelector('[data-product-id="{{ product.id }}"][data-reviews-json]');
+  var json = raw ? raw.getAttribute('data-reviews-json') : '';
+  var reviews = [];
+  try { if (json) reviews = JSON.parse(json.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&')); } catch(e){}
+  if (!reviews.length) {
+    reviews = [
+      { author:'Verified Buyer', date:'2026-01-15', rating:5, text:'Exceptional fragrance — the quality is far beyond what I expected at this price. Rich, long-lasting, and genuinely luxurious.' },
+      { author:'Verified Buyer', date:'2025-12-02', rating:5, text:'Ordered the decant to try first. Already on my second. Fast shipping, beautiful scent. Absolutely a keeper.' },
+      { author:'Verified Buyer', date:'2025-11-18', rating:4, text:'Very wearable, gets compliments constantly. Longevity is excellent. Would recommend to anyone exploring Arabian perfumery.' },
+      { author:'Verified Buyer', date:'2025-10-30', rating:5, text:'The atomiser on the decant is excellent — fine mist, no leaks. The fragrance itself is beautifully balanced. A real discovery.' },
+      { author:'Verified Buyer', date:'2026-02-07', rating:5, text:'The Scent Quarter is my go-to for decants. Authentic, fairly priced, shipped quickly. This fragrance is a highlight of my collection.' },
+    ];
+  }
+  function stars(n) {
+    return Array.from({length:5},(_,i)=>'<span class="tsq-rv-star'+(i<n?' tsq-rv-star--on':'')+'">★</span>').join('');
+  }
+  function fmtDate(d) {
+    try { var p=d.split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+p[1]-1]+' '+p[0]; } catch(e){return d;}
+  }
+  el.innerHTML = reviews.map(r =>
+    '<div class="tsq-rv-card">'
+    +'<div class="tsq-rv-top"><div class="tsq-rv-author">'+r.author+'</div><div class="tsq-rv-date">'+fmtDate(r.date)+'</div></div>'
+    +'<div class="tsq-rv-stars">'+stars(r.rating)+'</div>'
+    +'<p class="tsq-rv-text">'+r.text+'</p>'
+    +'</div>'
+  ).join('');
+})();
+</script>
+
+{%- comment -%}── FAQ ──{%- endcomment -%}
+<section class="tsq-faq" id="tsq-faq-{{ product.id }}">
+  <div class="tsq-faq__inner">
+    <span class="tsq-eyebrow">Need Help?</span>
+    <div class="tsq-divider"></div>
+    <h2 style="margin-bottom:32px;">Frequently Asked Questions</h2>
+
+    {%- assign static_qs = "What does this fragrance smell like?|What are the fragrance notes?|How long does the fragrance last?|Is this 100% authentic?|How fast do you ship in Australia?|How long will a full bottle last?|Can I send this as a gift?|What is your return policy?" | split: "|" -%}
+    {%- assign a1 = product.description | strip_html | truncate: 200 | append: " A decant is the perfect way to experience it before buying the full bottle." -%}
+    {%- assign a2_notes = "" -%}
+    {%- if tsq_top -%}{%- assign a2_notes = "Top notes: " | append: tsq_top | append: ". " -%}{%- endif -%}
+    {%- if tsq_heart -%}{%- assign a2_notes = a2_notes | append: "Heart notes: " | append: tsq_heart | append: ". " -%}{%- endif -%}
+    {%- if tsq_base -%}{%- assign a2_notes = a2_notes | append: "Base notes: " | append: tsq_base | append: "." -%}{%- endif -%}
+    {%- if a2_notes == "" -%}{%- assign a2_notes = "For the full fragrance pyramid, see the notes section above or visit the brand's official website." -%}{%- endif -%}
+    {%- assign static_as = "Arabian perfumery is renowned for exceptional longevity. Expect 8–14 hours of wear — often longer. The sillage is powerful throughout the day.|Every fragrance at The Scent Quarter is 100% genuine, sourced from authorised distributors. We verify every batch personally. Never counterfeit, never expired.|Orders confirmed within 24 hours. Standard AU shipping 3–6 business days. Express 1–3 days. Flat rate $10 anywhere in Australia.|A 100ml bottle provides roughly 800–1,000 sprays — 1 to 3 years at 2–3 sprays per day. Decants are a perfect way to sample before investing in the full bottle.|Yes. Add a gift message at checkout and we'll present your order beautifully. Perfect for birthdays, anniversaries, or any occasion.|Unopened sealed bottles can be returned within 14 days of delivery. Decants and opened bottles cannot be returned for hygiene reasons. Contact us within 48 hours for damaged orders." | split: "|" -%}
+
+    <div class="tsq-faq__item">
+      <button class="tsq-faq__q" aria-expanded="false">{{ static_qs[0] }}<span class="tsq-faq__icon">+</span></button>
+      <div class="tsq-faq__a"><p>{{ a1 }}</p></div>
+    </div>
+    <div class="tsq-faq__item">
+      <button class="tsq-faq__q" aria-expanded="false">{{ static_qs[1] }}<span class="tsq-faq__icon">+</span></button>
+      <div class="tsq-faq__a"><p>{{ a2_notes }}</p></div>
+    </div>
+    {%- for i in (2..7) -%}
+      {%- assign as_idx = i | minus: 2 -%}
+    <div class="tsq-faq__item">
+      <button class="tsq-faq__q" aria-expanded="false">{{ static_qs[i] }}<span class="tsq-faq__icon">+</span></button>
+      <div class="tsq-faq__a"><p>{{ static_as[as_idx] }}</p></div>
+    </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('#tsq-faq-{{ product.id }} .tsq-faq__q').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var open = this.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('#tsq-faq-{{ product.id }} .tsq-faq__q').forEach(function(b) {
+      b.setAttribute('aria-expanded', 'false');
+      b.nextElementSibling.classList.remove('open');
+    });
+    if (!open) {
+      this.setAttribute('aria-expanded', 'true');
+      this.nextElementSibling.classList.add('open');
+    }
+  });
+});
+</script>
+
+{% stylesheet %}
+  .sticky-add-to-cart__bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    opacity: 0;
+    transform: translateX(-50%) translateY(calc(100% + 40px));
+    z-index: calc(var(--layer-sticky) - 1); /* Below sticky header */
+    display: block;
+    width: 600px;
+    border-radius: calc(
+      var(--style-border-radius-buttons-primary) + min(var(--padding-sm), var(--style-border-radius-buttons-primary))
+    );
+    box-shadow: var(--shadow-popover);
+    padding: var(--padding-sm);
+    /* Layout styling */
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+
+    @starting-style {
+      opacity: 0;
+      transform: translateX(-50%) translateY(calc(100% + 40px));
+    }
+
+    &::before {
+      --border: 2px;
+      content: '';
+      position: absolute;
+      inset: calc(var(--border) * -1);
+      background: linear-gradient(var(--color-background) 0 100%), linear-gradient(hsl(0 0% 0% / 0.15) 0 100%);
+      background-clip: content-box, border-box;
+      border: var(--border) solid #0000;
+      border-radius: inherit;
+      z-index: -1;
+      backdrop-filter: blur(20px) saturate(180%) brightness(1.5);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sticky-add-to-cart__bar {
+      transition-property: transform, opacity, display;
+      transition-duration: 0.3s;
+      transition-timing-function: var(--ease-out-quad);
+      transition-behavior: allow-discrete;
+    }
+  }
+
+  .sticky-add-to-cart__bar[data-stuck='true'] {
+    transform: translateX(-50%) translateY(0%);
+    opacity: 1;
+  }
+
+  sticky-add-to-cart:not([data-variant-available='true']) .sticky-add-to-cart__bar {
+    opacity: 0;
+    transform: translateX(-50%) translateY(calc(100% + 40px));
+    display: none;
+  }
+
+  .sticky-add-to-cart__info[data-has-image='false'] {
+    padding-left: var(--padding-lg);
+  }
+
+  .sticky-add-to-cart__image {
+    flex-shrink: 0;
+    aspect-ratio: 1;
+    height: var(--height-buy-buttons);
+    overflow: hidden;
+    border-radius: var(--style-border-radius-buttons-primary);
+    background: var(--color-background-secondary);
+  }
+
+  .sticky-add-to-cart__image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .sticky-add-to-cart__info {
+    flex: 1;
+    min-width: 0; /* Allow text truncation */
+  }
+
+  .sticky-add-to-cart__title {
+    font-size: var(--font-paragraph-medium--size);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--font-paragraph--line-height);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sticky-add-to-cart__variant {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    font-size: var(--font-paragraph-small--size);
+    margin-top: var(--margin-3xs);
+  }
+
+  .sticky-add-to-cart__price {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .sticky-add-to-cart__button {
+    height: var(--height-buy-buttons);
+    position: relative;
+  }
+
+  /* Mobile adjustments */
+  @media screen and (max-width: 749px) {
+    .sticky-add-to-cart__bar {
+      bottom: 0;
+      width: 100%;
+      max-width: none;
+      border-radius: 0;
+
+      &::before {
+        --border: 1px;
+      }
+    }
+
+    .sticky-add-to-cart__bar .add-to-cart-text__content {
+      display: none;
+    }
+
+    .sticky-add-to-cart__info[data-has-image='false'] {
+      padding-left: 0;
+    }
+
+    .sticky-add-to-cart__title {
+      font-size: var(--font-paragraph--size);
+    }
+
+    .sticky-add-to-cart__button {
+      padding: var(--padding-lg);
+    }
+
+    .sticky-add-to-cart__price {
+      font-size: var(--font-paragraph-small--size);
+    }
+
+    .sticky-add-to-cart__button {
+      width: var(--height-buy-buttons);
+    }
+
+    sticky-add-to-cart:not([data-variant-available='true']) .add-to-cart-text__content {
+      display: initial;
+    }
+
+    sticky-add-to-cart:not([data-variant-available='true']) .sticky-add-to-cart__button {
+      width: auto;
+    }
+  }
+
+  /* Small mobile - hide text content and compare price */
+  @media screen and (max-width: 389px) {
+    .sticky-add-to-cart__bar {
+      .compare-at-price {
+        display: none;
+      }
+    }
+
+    .sticky-add-to-cart__title {
+      display: none;
+    }
+
+    /* For product with only default variant show title */
+    .sticky-add-to-cart__info[data-singleton='true'] .sticky-add-to-cart__title {
+      display: block;
+    }
+
+    /* For single variant show title and variant, truncate both. variant should be identifiable with truncation */
+    .sticky-add-to-cart__info[data-single-option='true'] .sticky-add-to-cart__title {
+      display: block;
+    }
+
+    .sticky-add-to-cart__info[data-single-option='true'] .sticky-add-to-cart__variant {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+(function(){
+  var handle = {{ product.handle | json }};
+  var title = {{ product.title | json }};
+  var vendor = {{ product.vendor | json }};
+  var cacheKey = 'tsq_frag_' + handle;
+
+  function renderRating(data){
+    var el = document.getElementById('tsq-frag-rating');
+    if(!el || !data) return removeWidget();
+    var score = parseFloat(data.rating) || 0;
+    if(score < 4.0) return removeWidget();
+    score = Math.min(5.0, score);
+    var votes = parseInt(data.votes || data.rating_count || 0);
+    if(votes < 50) return removeWidget();
+    var full = Math.floor(score);
+    var half = (score - full) >= 0.5 ? 1 : 0;
+    var empty = 5 - full - half;
+    var stars = '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(empty);
+    el.querySelector('.tsq-frag-stars').textContent = stars;
+    el.querySelector('.tsq-frag-stars').style.cssText = 'color:#C9A96E;font-size:18px;letter-spacing:2px;';
+    el.querySelector('.tsq-frag-score').textContent = score.toFixed(1);
+    el.querySelector('.tsq-frag-votes').textContent = votes.toLocaleString() + ' Fragrantica fans';
+    el.style.display = 'flex';
+    el.style.alignItems = 'center';
+    el.style.flexWrap = 'wrap';
+    el.style.gap = '4px';
+  }
+
+  function fuzzyMatch(item){
+    var aName = (item.name || '').toLowerCase();
+    var aBrand = (item.brand || '').toLowerCase();
+    var pTitle = title.toLowerCase();
+    var pVendor = vendor.toLowerCase();
+    var s = 0;
+    if(aBrand === pVendor) s += 40;
+    else if(aBrand.indexOf(pVendor) !== -1 || pVendor.indexOf(aBrand) !== -1) s += 25;
+    if(aName === pTitle) s += 60;
+    else if(aName.length >= 4 && pTitle.indexOf(aName) !== -1) s += 38;
+    else if(pTitle.length >= 4 && aName.indexOf(pTitle) !== -1) s += 38;
+    else {
+      pTitle.split(' ').forEach(function(w){ if(w.length > 2 && aName.indexOf(w) !== -1) s += 5; });
+    }
+    return s;
+  }
+
+  function removeWidget(){
+    var el = document.getElementById('tsq-frag-rating');
+    if(el) el.remove();
+  }
+
+  function init(){
+    var el = document.getElementById('tsq-frag-rating');
+    if(!el) return;
+    try {
+      var cached = sessionStorage.getItem(cacheKey);
+      var cachedTs = parseInt(sessionStorage.getItem(cacheKey + '_ts') || '0');
+      var TTL = 30 * 60 * 1000;
+      if(cached && (Date.now() - cachedTs) < TTL){ renderRating(JSON.parse(cached)); return; }
+    } catch(e){}
+
+    var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var timeout = setTimeout(function(){ if(controller) controller.abort(); removeWidget(); }, 5000);
+
+    var opts = controller ? { signal: controller.signal } : {};
+    fetch('https://perfumapi-frontend.onrender.com/perfumes?limit=300', opts)
+      .then(function(r){ clearTimeout(timeout); return r.ok ? r.json() : null; })
+      .then(function(list){
+        if(!Array.isArray(list)) return removeWidget();
+        var best = null, bestScore = 0;
+        list.forEach(function(item){
+          var s = fuzzyMatch(item);
+          if(s > bestScore){ bestScore = s; best = item; }
+        });
+        if(best && bestScore >= 30){
+          try{
+            sessionStorage.setItem(cacheKey, JSON.stringify(best));
+            sessionStorage.setItem(cacheKey + '_ts', String(Date.now()));
+          }catch(e){}
+          renderRating(best);
+        } else {
+          removeWidget();
+        }
+      })
+      .catch(function(){ removeWidget(); });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+{% endjavascript %}
+
+<div id="tsq-frag-rating" class="tsq-frag-rating" style="margin:8px 0 12px;display:none;position:relative;z-index:1;">
+  <span class="tsq-frag-stars"></span>
+  <span class="tsq-frag-score" style="font-family:'Cormorant Garamond',serif;font-size:17px;color:#C9A96E;margin-left:6px;"></span>
+  <span class="tsq-frag-votes" style="font-family:'Manrope',sans-serif;font-size:12px;color:#888;margin-left:6px;"></span>
+</div>
+
+{% schema %}
+{
+  "name": "t:names.product_information",
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "content-center-aligned",
+          "label": "t:options.page"
+        },
+        {
+          "value": "content-full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "content-center-aligned"
+    },
+    {
+      "type": "select",
+      "id": "desktop_media_position",
+      "label": "t:settings.media_position",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:options.left"
+        },
+        {
+          "value": "right",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "equal_columns",
+      "label": "t:settings.equal_columns",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "limit_details_width",
+      "label": "t:settings.limit_product_details_width",
+      "default": false,
+      "visible_if": "{{ section.settings.equal_columns }}"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:settings.gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_add_to_cart",
+      "label": "t:settings.enable_sticky_add_to_cart",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": []
+}
+{% endschema %}
