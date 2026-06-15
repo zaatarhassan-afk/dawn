@@ -1,14 +1,11 @@
-<section class="tsq-hero shopify-section" id="tsq-hero">
-  <div class="tsq-hero__content">
-    {%- if settings.logo != blank -%}
-      <img src="{{ settings.logo | image_url: width: 160 }}" alt="{{ shop.name }}" class="tsq-hero__logo">
-    {%- endif -%}
-    <span class="tsq-hero__eyebrow">Arabian Perfumery · Born in Australia</span>
-    <h1>Where Luxury<br><em>Meets Scent</em></h1>
-    <p>Discover the world's finest Middle Eastern fragrances, hand-decanted so you can experience true luxury from just $15.</p>
-    <div class="tsq-hero__buttons">
-      <a href="/collections/all-decants" class="btn">Shop Decants</a>
-      <a href="/collections/all" class="btn btn--ghost">Explore All</a>
+<section class="tsq-hero">
+  <div>
+    <p class="tsq-hero__eyebrow">Fine Fragrance Decants · Australia</p>
+    <h1 class="tsq-hero__title">Discover Your<br>Signature Scent</h1>
+    <p class="tsq-hero__subtitle">World-class Arabian and Middle Eastern perfumery, decanted into sizes you can actually explore. From $15.</p>
+    <div class="tsq-hero__ctas">
+      <a href="/collections/all" class="button">Shop Decants</a>
+      <a href="/collections" class="button button--secondary">Browse by Scent</a>
     </div>
   </div>
 </section>
@@ -17,6 +14,7 @@
 {
   "name": "TSQ Hero",
   "tag": "div",
-  "class": "shopify-section"
+  "class": "shopify-section",
+  "presets": [{ "name": "TSQ Hero" }]
 }
 {% endschema %}

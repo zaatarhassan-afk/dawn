@@ -245,32 +245,6 @@
               },
               "block_order": []
             },
-            "text_shipping": {
-              "type": "text",
-              "name": "Shipping note",
-              "settings": {
-                "text": "<p>📦 $10 shipping Australia-wide · $15 international · Decants from $15</p>",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "0.8rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "#7B6652",
-                "background": true,
-                "background_color": "#EFE5D226",
-                "corner_radius": 4,
-                "padding-block-start": 12,
-                "padding-block-end": 12,
-                "padding-inline-start": 16,
-                "padding-inline-end": 16
-              },
-              "blocks": {}
-            },
             "text_aEtTtq": {
               "type": "text",
               "name": "Product description",
@@ -303,7 +277,6 @@
             "divider_VJhene",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
-            "text_shipping",
             "text_aEtTtq"
           ]
         }

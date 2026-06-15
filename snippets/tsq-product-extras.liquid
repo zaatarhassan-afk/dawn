@@ -1,0 +1,185 @@
+{% comment %} TSQ Product Page — Notes Pyramid, What People Say, FAQ {% endcomment %}
+
+{%- liquid
+  assign top_notes    = product.metafields.tsq.top_notes.value    | default: ''
+  assign heart_notes  = product.metafields.tsq.heart_notes.value  | default: ''
+  assign base_notes   = product.metafields.tsq.base_notes.value   | default: ''
+  assign reviews_json = product.metafields.tsq.reviews.value
+-%}
+
+{% comment %} ── FRAGRANCE NOTES PYRAMID ── {% endcomment %}
+{% if top_notes != '' or heart_notes != '' or base_notes != '' %}
+<div class="tsq-notes" style="max-width:var(--page-width,1280px);margin:0 auto;padding-left:20px;padding-right:20px;">
+  <p class="tsq-notes__title">✦ Fragrance Notes</p>
+  <div class="tsq-notes__pyramid">
+
+    <div class="tsq-notes__tier">
+      <span class="tsq-notes__tier-icon">🍋</span>
+      <p class="tsq-notes__tier-name">Top Notes</p>
+      <div class="tsq-notes__bubbles">
+        {% assign top_list = top_notes | split: ',' %}
+        {% for note in top_list %}
+          {% if note != '' %}
+            <span class="tsq-notes__bubble">{{ note | strip }}</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="tsq-notes__tier">
+      <span class="tsq-notes__tier-icon">🌹</span>
+      <p class="tsq-notes__tier-name">Heart Notes</p>
+      <div class="tsq-notes__bubbles">
+        {% assign heart_list = heart_notes | split: ',' %}
+        {% for note in heart_list %}
+          {% if note != '' %}
+            <span class="tsq-notes__bubble">{{ note | strip }}</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="tsq-notes__tier">
+      <span class="tsq-notes__tier-icon">🪵</span>
+      <p class="tsq-notes__tier-name">Base Notes</p>
+      <div class="tsq-notes__bubbles">
+        {% assign base_list = base_notes | split: ',' %}
+        {% for note in base_list %}
+          {% if note != '' %}
+            <span class="tsq-notes__bubble">{{ note | strip }}</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endif %}
+
+{% comment %} ── WHAT PEOPLE SAY ── {% endcomment %}
+{% if reviews_json %}
+<div class="tsq-reviews" style="max-width:var(--page-width,1280px);margin:0 auto;padding-left:20px;padding-right:20px;">
+  <h3 class="tsq-reviews__heading">What People Say</h3>
+  <p class="tsq-reviews__sub">Community reviews from fragrance enthusiasts</p>
+  <div class="tsq-reviews__grid">
+    {% for review in reviews_json %}
+      <div class="tsq-review-card">
+        <div class="tsq-review-card__stars">
+          {% assign stars = review.rating | default: 5 | round %}
+          {% for i in (1..stars) %}★{% endfor %}
+        </div>
+        <p class="tsq-review-card__text">"{{ review.text }}"</p>
+        <span class="tsq-review-card__author">— {{ review.author }}{% if review.country %}, {{ review.country }}{% endif %}</span>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{% comment %} ── FAQ ── {% endcomment %}
+{%- liquid
+  assign family = ''
+  for tag in product.tags
+    assign t = tag | downcase
+    if t contains 'floral' or t contains 'rose'
+      assign family = 'floral'
+    elsif t contains 'oud'
+      assign family = 'oud'
+    elsif t contains 'fresh' or t contains 'aquatic' or t contains 'citrus'
+      assign family = 'fresh'
+    elsif t contains 'oriental' or t contains 'amber' or t contains 'spice'
+      assign family = 'oriental'
+    elsif t contains 'woody' or t contains 'wood' or t contains 'earthy'
+      assign family = 'woody'
+    elsif t contains 'gourmand' or t contains 'sweet' or t contains 'vanilla'
+      assign family = 'gourmand'
+    elsif t contains 'musk'
+      assign family = 'musk'
+    endif
+  endfor
+-%}
+
+<div class="tsq-faq" style="max-width:var(--page-width,1280px);margin:0 auto;padding-left:20px;padding-right:20px;">
+  <h3 class="tsq-faq__title">Questions & Answers</h3>
+
+  <div class="tsq-faq__item">
+    <button class="tsq-faq__question" onclick="tsqFaq(this)">
+      What is a decant?
+      <span class="tsq-faq__icon">+</span>
+    </button>
+    <div class="tsq-faq__answer">A decant is a small measured amount of fragrance drawn from the original bottle and transferred into a travel-friendly atomiser. You get the exact same juice as a full bottle — perfect for testing before committing.</div>
+  </div>
+
+  <div class="tsq-faq__item">
+    <button class="tsq-faq__question" onclick="tsqFaq(this)">
+      Is this a genuine {{ product.vendor }} fragrance?
+      <span class="tsq-faq__icon">+</span>
+    </button>
+    <div class="tsq-faq__answer">Yes, 100%. Every fragrance we stock is sourced directly from authorised distributors. We do not deal in imitations, inspired-by versions, or grey-market product. What you receive is exactly the same fragrance as purchasing a full bottle.</div>
+  </div>
+
+  {% if family == 'oud' or family == 'oriental' %}
+  <div class="tsq-faq__item">
+    <button class="tsq-faq__question" onclick="tsqFaq(this)">
+      This fragrance contains oud — how strong is it?
+      <span class="tsq-faq__icon">+</span>
+    </button>
+    <div class="tsq-faq__answer">Oud-based fragrances tend to be rich, long-lasting, and project well. We recommend starting with 1–2 sprays if you're new to oud. A decant is an ideal way to live with the scent for a few days before committing to a full bottle.</div>
+  </div>
+  {% endif %}
+
+  {% if family == 'floral' %}
+  <div class="tsq-faq__item">
+    <button class="tsq-faq__question" onclick="tsqFaq(this)">
+      Is this fragrance suitable for daytime wear?
+      <span class="tsq-faq__icon">+</span>
+    </button>
+    <div class="tsq-faq__answer">Floral fragrances are among the most versatile. This one works beautifully during the day and transitions elegantly into evening. Light and luminous, it suits warmer weather especially well.</div>
+  </div>
+  {% endif %}
+
+  {% if family == 'fresh' %}
+  <div class="tsq-faq__item">
+    <button class="tsq-faq__question" onclick="tsqFaq(this)">
+      How long does this fresh fragrance last?
+      <span class="tsq-faq__icon">+</span>
+    </button>
+    <div class="tsq-faq__answer">Fresh and aquatic fragrances are designed for presence, not longevity. Expect 4–6 hours of projection. Applying to pulse points and moisturised skin significantly extends performance. A light reapplication midday is perfectly normal.</div>
+  </div>
+  {% endif %}
+
+  {% if family == 'gourmand' %}
+  <div class="tsq-faq__item">
+    <button class="tsq-faq__question" onclick="tsqFaq(this)">
+      Is this fragrance too sweet for everyday wear?
+      <span class="tsq-faq__icon">+</span>
+    </button>
+    <div class="tsq-faq__answer">Gourmand fragrances walk a careful line — this one leans more sophisticated than sugary. The sweetness is balanced by resinous and woody base notes, making it wearable well beyond special occasions. A decant is the perfect way to decide if the sweetness level suits you.</div>
+  </div>
+  {% endif %}
+
+  <div class="tsq-faq__item">
+    <button class="tsq-faq__question" onclick="tsqFaq(this)">
+      How should I store my decant?
+      <span class="tsq-faq__icon">+</span>
+    </button>
+    <div class="tsq-faq__answer">Keep away from direct sunlight, heat, and humidity. A cool, dark drawer or cabinet is ideal. Properly stored, your decant will remain in perfect condition for years.</div>
+  </div>
+
+  <div class="tsq-faq__item">
+    <button class="tsq-faq__question" onclick="tsqFaq(this)">
+      What sizes are available?
+      <span class="tsq-faq__icon">+</span>
+    </button>
+    <div class="tsq-faq__answer">Decants are available in 3ml, 5ml, and 10ml. Select your preferred size using the size selector above. Larger sizes offer better value per ml.</div>
+  </div>
+
+  <div class="tsq-faq__item">
+    <button class="tsq-faq__question" onclick="tsqFaq(this)">
+      Can I buy this as a gift?
+      <span class="tsq-faq__icon">+</span>
+    </button>
+    <div class="tsq-faq__answer">Absolutely. Our packaging is presentation-quality and our decants make excellent gifts for fragrance lovers. If you'd like a personalised note included, add it in the order notes at checkout.</div>
+  </div>
+
+</div>

@@ -1,48 +1,37 @@
-<div class="shopify-section" style="background:var(--tsq-obsidian,#0D0D0D);padding:90px 0;">
-  <div style="text-align:center;margin-bottom:48px;padding:0 20px;">
-    <span class="tsq-eyebrow">Shop by Category</span>
-    <div class="tsq-divider"></div>
-    <h2>Explore the Collection</h2>
+<div style="background:var(--tsq-bg-deep,#14100A);padding:0 0 2px;">
+  <div class="tsq-section-header">
+    <p class="tsq-section-header__eyebrow">Shop by Scent</p>
+    <h2 class="tsq-section-header__title">Find Your Family</h2>
+    <p class="tsq-section-header__subtitle">Every fragrance family has a mood. Find yours.</p>
   </div>
 
-  <div class="tsq-tiles-grid">
-    {%- comment -%} Gender / decant tiles — pull first product image from collection {%- endcomment -%}
-    {%- assign gender_handles = "masculine,feminine,unisex,all-decants" | split: "," -%}
-    {%- assign gender_labels  = "Men's Fragrances,Women's Fragrances,Unisex,All Decants" | split: "," -%}
-    {%- for i in (0..3) -%}
-      {%- assign col = collections[gender_handles[i]] -%}
-      {%- if col and col.products.size > 0 -%}
-        <a href="{{ col.url }}" class="tsq-tile">
-          <img src="{{ col.products.first.featured_image | image_url: width: 800 }}"
-               alt="{{ gender_labels[i] }}" loading="lazy">
-          <div class="tsq-tile__overlay">
-            <span class="tsq-tile__label">{{ gender_labels[i] }}</span>
-          </div>
-        </a>
-      {%- endif -%}
-    {%- endfor -%}
+  <div class="tsq-tiles">
+    {% assign tile_configs = "floral-rose,🌹,Floral & Rose,Soft. Romantic. Luminous.|oud-collection,🪵,Oud Collection,Dark. Resinous. Timeless.|fresh-aquatic,🌊,Fresh & Aquatic,Clean. Crisp. Effortless.|oriental-amber,✨,Oriental & Amber,Warm. Spiced. Captivating.|woody-earthy,🌿,Woody & Earthy,Grounded. Bold. Lasting.|gourmand-sweet,🍯,Gourmand & Sweet,Indulgent. Comforting. Rich.|white-musk,🕊,White Musk,Delicate. Clean. Skin-close.|mens-fragrances,⬛,Men's,Confident. Bold. Distinct.|womens-fragrances,◻,Women's,Elegant. Feminine. Alluring." | split: "|" %}
 
-    {%- comment -%} Note-based tiles — lifestyle photography {%- endcomment -%}
-    <a href="/collections/oud" class="tsq-tile">
-      <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80" alt="Oud Collection" loading="lazy">
-      <div class="tsq-tile__overlay"><span class="tsq-tile__label">Oud Collection</span></div>
-    </a>
-    <a href="/collections/fresh-aquatic" class="tsq-tile">
-      <img src="https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=800&q=80" alt="Fresh & Aquatic" loading="lazy">
-      <div class="tsq-tile__overlay"><span class="tsq-tile__label">Fresh &amp; Aquatic</span></div>
-    </a>
-    <a href="/collections/oriental-amber" class="tsq-tile">
-      <img src="https://images.unsplash.com/photo-1611604548018-d56bbd85d681?w=800&q=80" alt="Oriental & Amber" loading="lazy">
-      <div class="tsq-tile__overlay"><span class="tsq-tile__label">Oriental &amp; Amber</span></div>
-    </a>
-    <a href="/collections/floral-rose" class="tsq-tile">
-      <img src="https://images.unsplash.com/photo-1490750967868-88df5691f2b6?w=800&q=80" alt="Floral & Rose" loading="lazy">
-      <div class="tsq-tile__overlay"><span class="tsq-tile__label">Floral &amp; Rose</span></div>
-    </a>
-    <a href="/collections/gourmand-sweet" class="tsq-tile">
-      <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&q=80" alt="Gourmand & Sweet" loading="lazy">
-      <div class="tsq-tile__overlay"><span class="tsq-tile__label">Gourmand &amp; Sweet</span></div>
-    </a>
+    {% for tile_str in tile_configs %}
+      {% assign parts = tile_str | split: "," %}
+      {% assign coll_handle = parts[0] %}
+      {% assign tile_icon = parts[1] %}
+      {% assign tile_title = parts[2] %}
+      {% assign tile_desc = parts[3] %}
+      {% assign tile_coll = collections[coll_handle] %}
+
+      <a href="/collections/{{ coll_handle }}" class="tsq-tile tsq-tile--{{ coll_handle | split: '-' | first }}">
+        {% if tile_coll and tile_coll.products_count > 0 %}
+          {% assign tile_img = tile_coll.products.first.featured_image %}
+          {% if tile_img %}
+            <img src="{{ tile_img | image_url: width: 600 }}"
+                 alt="{{ tile_title }}"
+                 class="tsq-tile__img"
+                 loading="lazy">
+          {% endif %}
+        {% endif %}
+        <div class="tsq-tile__overlay">
+          <span class="tsq-tile__label">{{ tile_icon }} {{ tile_desc }}</span>
+          <span class="tsq-tile__title">{{ tile_title }}</span>
+        </div>
+      </a>
+    {% endfor %}
   </div>
 </div>
 
@@ -50,6 +39,7 @@
 {
   "name": "TSQ Collection Tiles",
   "tag": "div",
-  "class": "shopify-section"
+  "class": "shopify-section",
+  "presets": [{ "name": "TSQ Collection Tiles" }]
 }
 {% endschema %}

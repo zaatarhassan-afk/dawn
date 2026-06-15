@@ -13,6 +13,14 @@
       "type": "tsq-hero",
       "settings": {}
     },
+    "tsq-trust": {
+      "type": "tsq-trust",
+      "settings": {}
+    },
+    "tsq-story": {
+      "type": "tsq-story",
+      "settings": {}
+    },
     "tsq-tiles": {
       "type": "tsq-collection-tiles",
       "settings": {}
@@ -21,25 +29,17 @@
       "type": "tsq-featured-products",
       "settings": {}
     },
-    "tsq-story": {
-      "type": "tsq-story",
-      "settings": {}
-    },
     "tsq-brands": {
       "type": "tsq-brand-spotlight",
-      "settings": {}
-    },
-    "tsq-heritage": {
-      "type": "tsq-heritage",
       "settings": {}
     }
   },
   "order": [
     "tsq-hero",
+    "tsq-trust",
+    "tsq-story",
     "tsq-tiles",
     "tsq-featured",
-    "tsq-story",
-    "tsq-brands",
-    "tsq-heritage"
+    "tsq-brands"
   ]
 }

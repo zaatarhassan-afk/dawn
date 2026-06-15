@@ -1,28 +1,31 @@
-<section class="tsq-story shopify-section">
-  <div class="tsq-story__inner">
-    {%- if settings.logo != blank -%}
-      <img src="{{ settings.logo | image_url: width: 120 }}" alt="{{ shop.name }}" class="tsq-story__logo">
-    {%- endif -%}
-    <span class="tsq-eyebrow">Our Heritage</span>
-    <div class="tsq-divider"></div>
-    <h2>Born in Australia.<br>Inspired by the East.</h2>
-
-    <p class="tsq-story__body">The Scent Quarter began with an obsession. A group of fragrance lovers right here in Australia fell head over heels for the art of Arabian perfumery — the deep oud, the smoky resins, the lush florals and warm ambers that define Gulf culture. What started as a personal passion became a mission: to share these extraordinary scents with fellow Australians.</p>
-
-    <p class="tsq-story__body">We source directly from the most respected houses in the Gulf — Lattafa, Afnan, Rasasi, Armaf, Gissah and more. Every fragrance is authentic, hand-inspected, and decanted with care. We believe you shouldn't have to commit to a full bottle to find your signature scent, which is why we've made world-class Arabian perfumery available from just $15.</p>
-
-    <p class="tsq-story__body">This is not just retail. It's a passion project rooted in culture, craftsmanship, and community — built right here in Australia, for anyone who believes that extraordinary fragrance shouldn't cost a fortune.</p>
-
-    <a href="/collections/all" style="font-family:var(--tsq-ui);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--tsq-gold);border-bottom:1px solid var(--tsq-gold);padding-bottom:3px;display:inline-block;margin-top:28px;">
-      Explore our collection →
-    </a>
+<div class="tsq-story">
+  {% if section.settings.image != blank %}
+    <img src="{{ section.settings.image | image_url: width: 900 }}" alt="The Scent Quarter" class="tsq-story__image" loading="lazy">
+  {% else %}
+    <div style="background:linear-gradient(135deg,#1A1208,#0D0A05);display:flex;align-items:center;justify-content:center;min-height:400px;">
+      <span style="font-family:var(--tsq-font-display);font-size:80px;opacity:0.12;color:#C9A96E;">SQ</span>
+    </div>
+  {% endif %}
+  <div class="tsq-story__text">
+    <p class="tsq-story__overline">Our Story</p>
+    <h2 class="tsq-story__heading">{{ section.settings.heading | default: "We're obsessed with scent." }}</h2>
+    <p class="tsq-story__body">{{ section.settings.body | default: "The finest Arabian and Middle Eastern fragrances have always been reserved for those willing to spend $200 on a full bottle. We think that's wrong. The Scent Quarter lets you explore the world's most compelling perfumery — one decant at a time." }}</p>
+    <a href="{{ section.settings.cta_link | default: '/pages/about' }}" class="button button--secondary">{{ section.settings.cta_label | default: 'Our Story' }}</a>
   </div>
-</section>
+</div>
 
 {% schema %}
 {
   "name": "TSQ Story",
   "tag": "div",
-  "class": "shopify-section"
+  "class": "shopify-section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "We're obsessed with scent." },
+    { "type": "textarea", "id": "body", "label": "Body text" },
+    { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Our Story" }
+  ],
+  "presets": [{ "name": "TSQ Story" }]
 }
 {% endschema %}
