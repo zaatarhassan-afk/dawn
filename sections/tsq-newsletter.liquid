@@ -1,0 +1,30 @@
+<div class="tsq-newsletter shopify-section">
+  <p class="tsq-newsletter__eyebrow">Stay in the Know</p>
+  <h2 class="tsq-newsletter__heading">Join the House</h2>
+  <p class="tsq-newsletter__sub">New decants, rare releases, and the occasional obsession — straight to your inbox. No spam, ever.</p>
+
+  {% form 'customer', class: 'tsq-newsletter__form' %}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+    <input
+      type="email"
+      name="contact[email]"
+      class="tsq-newsletter__input"
+      placeholder="Your email address"
+      required
+      autocomplete="email"
+    >
+    <button type="submit" class="tsq-newsletter__btn">Subscribe</button>
+  {% endform %}
+
+  {%- if customer -%}
+    <p style="font-family:var(--tsq-font-body);font-size:14px;color:var(--tsq-gold);margin-top:16px;">You're already on the list — thank you.</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "TSQ Newsletter",
+  "tag": "div",
+  "class": "shopify-section"
+}
+{% endschema %}

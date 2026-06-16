@@ -1,26 +1,44 @@
-{%- assign brands = 'Afnan,Armaf,Gissah,Lattafa,Rasasi,Reef,Swiss Arabian' | split: ',' -%}
-{%- assign brand_handles = 'afnan,armaf,gissah,lattafa,rasasi,reef,swiss-arabian' | split: ',' -%}
-<div style="background:#14100A;padding:72px 20px;border-top:1px solid rgba(201,169,110,0.12);">
-  <div style="max-width:1280px;margin:0 auto;">
-    <div style="text-align:center;margin-bottom:48px;">
-      <p style="font-family:'Manrope',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#C9A96E;margin:0 0 12px;">The Houses</p>
-      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,4vw,48px);font-weight:400;font-style:italic;color:#FFFFFF;margin:0;">Shop by Brand</h2>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;">
-      {%- for brand in brands -%}
-        {%- assign bhandle = brand_handles[forloop.index0] -%}
-        {%- assign bcoll = collections[bhandle] -%}
-        <a href="/collections/{{ bhandle }}" style="display:block;text-decoration:none;background:#1A1410;border:1px solid rgba(201,169,110,0.12);padding:28px 16px;text-align:center;transition:border-color 0.3s,background 0.3s;" onmouseover="this.style.borderColor='#C9A96E';this.style.background='#201A14'" onmouseout="this.style.borderColor='rgba(201,169,110,0.12)';this.style.background='#1A1410'">
-          <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:400;color:#FFFFFF;margin:0 0 4px;">{{ brand }}</p>
-          {%- if bcoll and bcoll.products_count > 0 -%}
-            <p style="font-family:'Manrope',sans-serif;font-size:9px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#C9A96E;margin:0;">{{ bcoll.products_count }} decants</p>
+<div class="shopify-section tsq-section tsq-section--champagne">
+  <div class="tsq-section__inner">
+    <span class="tsq-eyebrow">The Houses</span>
+    <div class="tsq-divider"></div>
+    <h2 class="tsq-section-title">Our Fragrance Houses</h2>
+    <p style="font-family:var(--tsq-font-body);font-size:15px;color:var(--tsq-text-muted);max-width:520px;margin:0 auto 48px;line-height:1.7;">
+      Curated from the finest Arabian perfumers. Authentic, exceptional, available as decants from $15.
+    </p>
+  </div>
+
+  <div class="tsq-brands-grid">
+    {%- assign brand_handles = "afnan,ahmed-al-maghribi,armaf,arabian-oud,fragrance-world,gissah,khadlaj,lattafa,maison-alhambra,rasasi,rayhaan,reef,swiss-arabian" | split: "," -%}
+    {%- for handle in brand_handles -%}
+      {%- assign col = collections[handle] -%}
+      {%- if col -%}
+        <a href="{{ col.url }}" class="tsq-brand-card">
+          {%- if col.image -%}
+            <img src="{{ col.image | image_url: width: 600 }}" alt="{{ col.title }}" class="tsq-brand-card__img" loading="lazy">
+          {%- elsif col.products.first.featured_image -%}
+            <img src="{{ col.products.first.featured_image | image_url: width: 600 }}" alt="{{ col.title }}" class="tsq-brand-card__img" loading="lazy">
           {%- endif -%}
+          <div class="tsq-brand-card__body">
+            <p class="tsq-brand-card__name">{{ col.title }}</p>
+            <p class="tsq-brand-card__count">{{ col.products_count }} fragrance{% if col.products_count != 1 %}s{% endif %}</p>
+          </div>
         </a>
-      {%- endfor -%}
-    </div>
+      {%- else -%}
+        <a href="/collections/{{ handle }}" class="tsq-brand-card">
+          <div class="tsq-brand-card__body">
+            <p class="tsq-brand-card__name">{{ handle | replace: '-', ' ' | capitalize }}</p>
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 </div>
 
 {% schema %}
-{ "name": "TSQ Brand Spotlight", "tag": "div", "presets": [{ "name": "TSQ Brand Spotlight" }] }
+{
+  "name": "TSQ Brand Spotlight",
+  "tag": "div",
+  "class": "shopify-section"
+}
 {% endschema %}

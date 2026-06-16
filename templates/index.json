@@ -29,8 +29,16 @@
       "type": "tsq-featured-products",
       "settings": {}
     },
+    "tsq-reviews-banner": {
+      "type": "tsq-reviews-banner",
+      "settings": {}
+    },
     "tsq-brands": {
       "type": "tsq-brand-spotlight",
+      "settings": {}
+    },
+    "tsq-newsletter": {
+      "type": "tsq-newsletter",
       "settings": {}
     }
   },
@@ -40,6 +48,8 @@
     "tsq-story",
     "tsq-tiles",
     "tsq-featured",
-    "tsq-brands"
+    "tsq-reviews-banner",
+    "tsq-brands",
+    "tsq-newsletter"
   ]
 }
