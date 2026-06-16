@@ -1,0 +1,123 @@
+<footer class="tsq-footer">
+  <div class="tsq-footer__inner">
+
+    <!-- Brand column -->
+    <div class="tsq-footer__col">
+      <span class="tsq-footer__brand-name">The Scent Quarter</span>
+      <p class="tsq-footer__brand-desc">{{ section.settings.brand_description }}</p>
+      {% if section.settings.social_instagram != blank %}
+        <a href="{{ section.settings.social_instagram }}" class="tsq-footer__link" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>
+      {% endif %}
+    </div>
+
+    <!-- Quick Links -->
+    <div class="tsq-footer__col">
+      <span class="tsq-footer__col-title">{{ section.settings.col2_title }}</span>
+      <ul class="tsq-footer__links">
+        <li><a href="{{ routes.collections_url }}/all-decants" class="tsq-footer__link">All Fragrances</a></li>
+        <li><a href="{{ routes.collections_url }}/all-decants?sort_by=created-descending" class="tsq-footer__link">New Arrivals</a></li>
+        <li><a href="{{ routes.collections_url }}/all-decants?sort_by=best-selling" class="tsq-footer__link">Best Sellers</a></li>
+        <li><a href="{{ routes.collections_url }}/oud" class="tsq-footer__link">Oud & Woody</a></li>
+        <li><a href="{{ routes.collections_url }}/floral-rose" class="tsq-footer__link">Floral & Rose</a></li>
+        <li><a href="{{ routes.collections_url }}/fresh-aquatic" class="tsq-footer__link">Fresh & Aquatic</a></li>
+      </ul>
+    </div>
+
+    <!-- Customer Care -->
+    <div class="tsq-footer__col">
+      <span class="tsq-footer__col-title">{{ section.settings.col3_title }}</span>
+      <ul class="tsq-footer__links">
+        <li><a href="/pages/contact" class="tsq-footer__link">Contact Us</a></li>
+        <li><a href="/pages/about" class="tsq-footer__link">About Us</a></li>
+        <li><a href="/pages/faq" class="tsq-footer__link">FAQ</a></li>
+        {%- if shop.privacy_policy != blank -%}
+          <li><a href="{{ shop.privacy_policy.url }}" class="tsq-footer__link">Privacy Policy</a></li>
+        {%- endif -%}
+        {%- if shop.refund_policy != blank -%}
+          <li><a href="{{ shop.refund_policy.url }}" class="tsq-footer__link">Returns Policy</a></li>
+        {%- endif -%}
+        {%- if shop.terms_of_service != blank -%}
+          <li><a href="{{ shop.terms_of_service.url }}" class="tsq-footer__link">Terms of Service</a></li>
+        {%- endif -%}
+      </ul>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="tsq-footer__col">
+      <span class="tsq-footer__col-title">{{ section.settings.col4_title }}</span>
+      <p class="tsq-footer__newsletter-text">{{ section.settings.newsletter_text }}</p>
+      {% form 'customer', id: 'tsq-footer-newsletter' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="tsq-footer__newsletter-form">
+          <input
+            type="email"
+            name="contact[email]"
+            class="tsq-footer__newsletter-input"
+            placeholder="{{ section.settings.newsletter_placeholder }}"
+            required
+            aria-label="Email address"
+          >
+          <button type="submit" class="tsq-footer__newsletter-btn" name="commit">
+            {{ section.settings.newsletter_btn }}
+          </button>
+        </div>
+      {% endform %}
+    </div>
+
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="tsq-footer__bottom">
+    <span class="tsq-footer__copyright">
+      &copy; {{ 'now' | date: '%Y' }} The Scent Quarter. All rights reserved.
+    </span>
+    <div style="display:flex;gap:16px;align-items:center;">
+      {% for i in (1..4) %}
+        {% assign policy_key = 'policy_' | append: i %}
+        {% assign policy_url_key = 'policy_url_' | append: i %}
+        {% assign policy_val = section.settings[policy_key] %}
+        {% assign policy_url_val = section.settings[policy_url_key] %}
+        {% if policy_val != blank %}
+          <a href="{{ policy_url_val | default: '#' }}" class="tsq-footer__copyright" style="text-decoration:none;">{{ policy_val }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "TSQ Footer Custom",
+  "tag": "section",
+  "class": "shopify-section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Brand description",
+      "default": "Premium online fragrance boutique specialising in luxury Arabian and Middle Eastern perfumes, delivered across Australia."
+    },
+    { "type": "url", "id": "social_instagram", "label": "Instagram URL" },
+    { "type": "text", "id": "col2_title", "label": "Column 2 title", "default": "Quick Links" },
+    { "type": "text", "id": "col3_title", "label": "Column 3 title", "default": "Customer Care" },
+    { "type": "text", "id": "col4_title", "label": "Column 4 title", "default": "Stay in the Know" },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Newsletter description",
+      "default": "Subscribe for exclusive launches, fragrance stories, and offers from The Scent Quarter."
+    },
+    { "type": "text", "id": "newsletter_placeholder", "label": "Newsletter input placeholder", "default": "Your email address" },
+    { "type": "text", "id": "newsletter_btn", "label": "Newsletter button label", "default": "JOIN" },
+    { "type": "text", "id": "policy_1", "label": "Footer policy 1 label", "default": "Privacy" },
+    { "type": "url", "id": "policy_url_1", "label": "Footer policy 1 URL" },
+    { "type": "text", "id": "policy_2", "label": "Footer policy 2 label", "default": "Terms" },
+    { "type": "url", "id": "policy_url_2", "label": "Footer policy 2 URL" }
+  ],
+  "presets": [
+    {
+      "name": "TSQ Footer Custom"
+    }
+  ]
+}
+{% endschema %}

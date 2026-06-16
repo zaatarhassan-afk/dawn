@@ -1413,7 +1413,125 @@ footer * { background-color: transparent !important; }
 .tsq-faq__item.open .tsq-faq__question .tsq-faq__icon { transform: rotate(45deg); }
 
 /* ═══════════════════════════════════════════════════
-   STEP 28 — RESPONSIVE
+   FOOTER
+   ═══════════════════════════════════════════════════ */
+.tsq-footer {
+  background: var(--tsq-nearblack);
+  border-top: 1px solid var(--tsq-gold-border);
+  padding: 64px 40px 0;
+}
+.tsq-footer__inner {
+  max-width: var(--page-width, 1200px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.4fr;
+  gap: 48px;
+  padding-bottom: 48px;
+}
+.tsq-footer__brand-name {
+  display: block;
+  font-family: var(--tsq-h) !important;
+  font-size: 1.4rem !important;
+  color: var(--tsq-parchment) !important;
+  letter-spacing: 0.04em !important;
+  margin-bottom: 14px;
+}
+.tsq-footer__brand-desc {
+  font-family: var(--tsq-b) !important;
+  font-size: 13px !important;
+  color: var(--tsq-text-2) !important;
+  line-height: 1.75 !important;
+  margin: 0 0 20px !important;
+}
+.tsq-footer__col-title {
+  display: block;
+  font-family: var(--tsq-ui) !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: var(--tsq-gold) !important;
+  margin-bottom: 18px;
+}
+.tsq-footer__links {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.tsq-footer__links li { margin-bottom: 10px !important; }
+.tsq-footer__link {
+  font-family: var(--tsq-ui) !important;
+  font-size: 12px !important;
+  color: var(--tsq-text-2) !important;
+  text-decoration: none !important;
+  letter-spacing: 0.04em !important;
+  transition: color var(--tsq-ease) !important;
+}
+.tsq-footer__link:hover { color: var(--tsq-gold) !important; }
+.tsq-footer__newsletter-text {
+  font-family: var(--tsq-b) !important;
+  font-size: 13px !important;
+  color: var(--tsq-text-2) !important;
+  line-height: 1.7 !important;
+  margin: 0 0 20px !important;
+}
+.tsq-footer__newsletter-form {
+  display: flex;
+  gap: 0;
+}
+.tsq-footer__newsletter-input {
+  flex: 1;
+  background: rgba(250,247,242,0.06) !important;
+  border: 1px solid var(--tsq-gold-border) !important;
+  border-right: none !important;
+  border-radius: var(--tsq-r) 0 0 var(--tsq-r) !important;
+  color: var(--tsq-parchment) !important;
+  font-family: var(--tsq-ui) !important;
+  font-size: 12px !important;
+  padding: 10px 14px !important;
+  outline: none !important;
+}
+.tsq-footer__newsletter-input::placeholder { color: var(--tsq-text-3) !important; }
+.tsq-footer__newsletter-btn {
+  background: var(--tsq-gold) !important;
+  color: var(--tsq-obsidian) !important;
+  border: none !important;
+  border-radius: 0 var(--tsq-r) var(--tsq-r) 0 !important;
+  font-family: var(--tsq-ui) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  padding: 10px 16px !important;
+  cursor: pointer !important;
+  transition: opacity var(--tsq-ease) !important;
+}
+.tsq-footer__newsletter-btn:hover { opacity: 0.85 !important; }
+.tsq-footer__bottom {
+  border-top: 1px solid var(--tsq-gold-border);
+  max-width: var(--page-width, 1200px);
+  margin: 0 auto;
+  padding: 18px 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tsq-footer__copyright {
+  font-family: var(--tsq-ui) !important;
+  font-size: 11px !important;
+  color: var(--tsq-text-3) !important;
+  letter-spacing: 0.04em !important;
+}
+@media (max-width: 900px) {
+  .tsq-footer__inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 600px) {
+  .tsq-footer { padding: 48px 24px 0; }
+  .tsq-footer__inner { grid-template-columns: 1fr; gap: 32px; }
+  .tsq-footer__bottom { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
    ═══════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .tsq-hero h1 { font-size: 42px !important; }
