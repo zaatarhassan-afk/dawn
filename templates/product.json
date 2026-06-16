@@ -292,6 +292,10 @@
         "padding-block-end": 0
       }
     },
+    "tsq-product-enhancements": {
+      "type": "tsq-product-enhancements",
+      "settings": {}
+    },
     "tsq-house-products": {
       "type": "tsq-house-products",
       "settings": {}
@@ -444,6 +448,7 @@
   },
   "order": [
     "main",
+    "tsq-product-enhancements",
     "tsq-house-products",
     "tsq-similar-products",
     "product_recommendations_qggXJq"
