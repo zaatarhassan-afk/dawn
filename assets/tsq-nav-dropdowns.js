@@ -4,10 +4,9 @@
 
   const NAV_DROPDOWNS = {
     'Shop All': [
-      { label: 'All Fragrances',  href: '/collections/all' },
-      { label: 'All Decants',     href: '/collections/all-decants' },
-      { label: 'New Arrivals',    href: '/collections/all?sort_by=created-descending' },
-      { label: 'Best Sellers',    href: '/collections/all?sort_by=best-selling' },
+      { label: 'All Fragrances',     href: '/collections/all-decants' },
+      { label: 'New Arrivals',       href: '/collections/all-decants?sort_by=created-descending' },
+      { label: 'Best Sellers',       href: '/collections/all-decants?sort_by=best-selling' },
     ],
     'Brands': [
       { label: 'Afnan',              href: '/collections/afnan' },
@@ -24,16 +23,20 @@
       { label: 'Reef',               href: '/collections/reef' },
       { label: 'Swiss Arabian',      href: '/collections/swiss-arabian' },
     ],
-    'Collections': [
+    'Shop by Notes': [
       { label: 'Oud & Woody',        href: '/collections/oud' },
       { label: 'Floral & Rose',      href: '/collections/floral-rose' },
       { label: 'Fresh & Aquatic',    href: '/collections/fresh-aquatic' },
       { label: 'Oriental & Amber',   href: '/collections/oriental-amber' },
       { label: 'Gourmand & Sweet',   href: '/collections/gourmand-sweet' },
       { label: 'White Musk',         href: '/collections/musk-clean' },
-      { label: 'Woody & Earthy',     href: '/collections/woody-spicy' },
+      { label: 'Woody & Spicy',      href: '/collections/woody-spicy' },
+      { label: 'Tobacco & Incense',  href: '/collections/tobacco-incense' },
+    ],
+    'Shop by Gender': [
       { label: "Men's",              href: '/collections/masculine' },
       { label: "Women's",            href: '/collections/feminine' },
+      { label: 'Unisex',             href: '/collections/unisex' },
     ],
     'Decants': [
       { label: 'All Decants',        href: '/collections/all-decants' },
