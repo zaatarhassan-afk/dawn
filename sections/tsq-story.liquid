@@ -1,12 +1,16 @@
-<div class="tsq-story" style="background:#0D0D0D;padding:100px 20px;">
-  <div class="tsq-story__inner" style="max-width:720px;margin:0 auto;text-align:center;">
-    {%- if settings.logo != blank -%}
-      <img src="{{ settings.logo | image_url: width: 80 }}" alt="{{ shop.name }}" class="tsq-story__logo" style="width:60px;height:auto;opacity:0.35;margin:0 auto 32px;display:block;">
-    {%- endif -%}
-    <p style="font-family:'Manrope',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#C9A96E;margin:0 0 16px;">Our Story</p>
-    <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,4vw,48px);font-weight:400;font-style:italic;color:#FFFFFF;margin:0 0 24px;line-height:1.2;">{{ section.settings.heading | default: "We're obsessed with scent." }}</h2>
-    <p class="tsq-story__body" style="font-family:'Lora',serif;font-size:16px;color:rgba(250,247,242,0.62);line-height:1.9;margin:0 0 32px;">{{ section.settings.body | default: "The finest Arabian and Middle Eastern fragrances have always been reserved for those willing to spend $200 on a full bottle. We think that's wrong. The Scent Quarter lets you explore the world's most compelling perfumery — one decant at a time." }}</p>
-    <a href="{{ section.settings.cta_link | default: '/collections/all' }}" style="display:inline-block;background:transparent;border:1px solid #C9A96E;color:#C9A96E;font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;padding:14px 32px;text-decoration:none;transition:all 0.2s;">{{ section.settings.cta_label | default: 'Shop All Decants' }}</a>
+<div class="tsq-story">
+  {% if section.settings.image != blank %}
+    <img src="{{ section.settings.image | image_url: width: 900 }}" alt="The Scent Quarter" class="tsq-story__image" loading="lazy">
+  {% else %}
+    <div style="background:linear-gradient(135deg,#1A1208,#0D0A05);display:flex;align-items:center;justify-content:center;min-height:400px;">
+      <span style="font-family:var(--tsq-font-display);font-size:80px;opacity:0.12;color:#C9A96E;">SQ</span>
+    </div>
+  {% endif %}
+  <div class="tsq-story__text">
+    <p class="tsq-story__overline">Our Story</p>
+    <h2 class="tsq-story__heading">{{ section.settings.heading | default: "We're obsessed with scent." }}</h2>
+    <p class="tsq-story__body">{{ section.settings.body | default: "The finest Arabian and Middle Eastern fragrances have always been reserved for those willing to spend $200 on a full bottle. We think that's wrong. The Scent Quarter lets you explore the world's most compelling perfumery — one decant at a time." }}</p>
+    <a href="{{ section.settings.cta_link | default: '/pages/about' }}" class="button button--secondary">{{ section.settings.cta_label | default: 'Our Story' }}</a>
   </div>
 </div>
 
@@ -14,11 +18,13 @@
 {
   "name": "TSQ Story",
   "tag": "div",
+  "class": "shopify-section",
   "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "We're obsessed with scent." },
     { "type": "textarea", "id": "body", "label": "Body text" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
-    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop All Decants" }
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Our Story" }
   ],
   "presets": [{ "name": "TSQ Story" }]
 }
