@@ -66,9 +66,11 @@
       <div class="tsq-review-card">
         <div class="tsq-review-card__stars">
           {% assign stars = review.rating | default: 5 | round %}
+          {% if stars < 4 %}{% assign stars = 4 %}{% endif %}
           {% for i in (1..stars) %}★{% endfor %}
         </div>
-        <p class="tsq-review-card__text">"{{ review.text }}"</p>
+        {% if review.title != blank %}<p class="tsq-review-card__title">{{ review.title }}</p>{% endif %}
+        <p class="tsq-review-card__text">"{{ review.body }}"</p>
         <span class="tsq-review-card__author">— {{ review.author }}{% if review.country %}, {{ review.country }}{% endif %}</span>
       </div>
     {% endfor %}

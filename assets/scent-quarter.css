@@ -1362,6 +1362,11 @@ footer * { background-color: transparent !important; }
 .tsq-review-card__stars {
   color: var(--tsq-gold); font-size: 14px; letter-spacing: 2px;
 }
+.tsq-review-card__title {
+  font-family: var(--tsq-ui) !important; font-size: 12px !important;
+  font-weight: 600 !important; color: var(--tsq-parchment) !important;
+  letter-spacing: 0.04em !important; margin: 0 !important;
+}
 .tsq-review-card__text {
   font-family: var(--tsq-b) !important; font-size: 13.5px !important;
   color: var(--tsq-text-2) !important; line-height: 1.7 !important;
