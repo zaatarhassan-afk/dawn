@@ -25,20 +25,20 @@
       { label: 'Swiss Arabian',      href: '/collections/swiss-arabian' },
     ],
     'Collections': [
-      { label: 'Oud & Woody',        href: '/collections/oud-collection' },
+      { label: 'Oud & Woody',        href: '/collections/oud' },
       { label: 'Floral & Rose',      href: '/collections/floral-rose' },
       { label: 'Fresh & Aquatic',    href: '/collections/fresh-aquatic' },
       { label: 'Oriental & Amber',   href: '/collections/oriental-amber' },
       { label: 'Gourmand & Sweet',   href: '/collections/gourmand-sweet' },
-      { label: 'White Musk',         href: '/collections/white-musk' },
-      { label: 'Woody & Earthy',     href: '/collections/woody-earthy' },
-      { label: "Men's",              href: '/collections/mens-fragrances' },
-      { label: "Women's",            href: '/collections/womens-fragrances' },
+      { label: 'White Musk',         href: '/collections/musk-clean' },
+      { label: 'Woody & Earthy',     href: '/collections/woody-spicy' },
+      { label: "Men's",              href: '/collections/masculine' },
+      { label: "Women's",            href: '/collections/feminine' },
     ],
     'Decants': [
       { label: 'All Decants',        href: '/collections/all-decants' },
-      { label: '5ml Samples',        href: '/collections/decants-5ml' },
-      { label: '10ml Decants',       href: '/collections/decants-10ml' },
+      { label: '5ml Samples',        href: '/collections/5ml-decants' },
+      { label: '10ml Decants',       href: '/collections/10ml-decants' },
     ],
   };
 

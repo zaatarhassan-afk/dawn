@@ -1,4 +1,4 @@
-<div style="background:var(--tsq-bg-deep,#14100A);padding:0 0 2px;">
+<div style="background:var(--tsq-pearl);padding:0 0 2px;">
   <div class="tsq-section-header">
     <p class="tsq-section-header__eyebrow">Shop by Scent</p>
     <h2 class="tsq-section-header__title">Find Your Family</h2>
@@ -6,32 +6,32 @@
   </div>
 
   <div class="tsq-tiles">
-    {% assign tile_configs = "floral-rose,🌹,Floral & Rose,Soft. Romantic. Luminous.|oud-collection,🪵,Oud Collection,Dark. Resinous. Timeless.|fresh-aquatic,🌊,Fresh & Aquatic,Clean. Crisp. Effortless.|oriental-amber,✨,Oriental & Amber,Warm. Spiced. Captivating.|woody-earthy,🌿,Woody & Earthy,Grounded. Bold. Lasting.|gourmand-sweet,🍯,Gourmand & Sweet,Indulgent. Comforting. Rich.|white-musk,🕊,White Musk,Delicate. Clean. Skin-close.|mens-fragrances,⬛,Men's,Confident. Bold. Distinct.|womens-fragrances,◻,Women's,Elegant. Feminine. Alluring." | split: "|" %}
+    {%- assign tiles = "floral-rose,🌹,Floral & Rose,Soft & Romantic|oud,🪵,Oud Collection,Dark & Resinous|fresh-aquatic,🌊,Fresh & Aquatic,Clean & Crisp|oriental-amber,✨,Oriental & Amber,Warm & Spiced|woody-spicy,🌿,Woody & Earthy,Grounded & Bold|gourmand-sweet,🍯,Gourmand & Sweet,Indulgent & Rich|musk-clean,🕊,White Musk,Clean & Skin-close|masculine,⬛,Men's,Confident & Bold|feminine,🌸,Women's,Elegant & Alluring" | split: "|" -%}
 
-    {% for tile_str in tile_configs %}
-      {% assign parts = tile_str | split: "," %}
-      {% assign coll_handle = parts[0] %}
-      {% assign tile_icon = parts[1] %}
-      {% assign tile_title = parts[2] %}
-      {% assign tile_desc = parts[3] %}
-      {% assign tile_coll = collections[coll_handle] %}
+    {%- for tile_str in tiles -%}
+      {%- assign parts = tile_str | split: "," -%}
+      {%- assign coll_handle = parts[0] -%}
+      {%- assign tile_icon = parts[1] -%}
+      {%- assign tile_title = parts[2] -%}
+      {%- assign tile_desc = parts[3] -%}
+      {%- assign tile_coll = collections[coll_handle] -%}
 
-      <a href="/collections/{{ coll_handle }}" class="tsq-tile tsq-tile--{{ coll_handle | split: '-' | first }}">
-        {% if tile_coll and tile_coll.products_count > 0 %}
-          {% assign tile_img = tile_coll.products.first.featured_image %}
-          {% if tile_img %}
+      <a href="/collections/{{ coll_handle }}" class="tsq-tile">
+        {%- if tile_coll and tile_coll.products_count > 0 -%}
+          {%- assign tile_img = tile_coll.products.first.featured_image -%}
+          {%- if tile_img -%}
             <img src="{{ tile_img | image_url: width: 600 }}"
                  alt="{{ tile_title }}"
                  class="tsq-tile__img"
                  loading="lazy">
-          {% endif %}
-        {% endif %}
+          {%- endif -%}
+        {%- endif -%}
         <div class="tsq-tile__overlay">
           <span class="tsq-tile__label">{{ tile_icon }} {{ tile_desc }}</span>
           <span class="tsq-tile__title">{{ tile_title }}</span>
         </div>
       </a>
-    {% endfor %}
+    {%- endfor -%}
   </div>
 </div>
 
