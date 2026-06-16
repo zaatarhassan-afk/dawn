@@ -128,6 +128,55 @@ a {
 }
 a:hover { color: var(--tsq-gold) !important; }
 
+/* ─── Section wrappers ─── */
+.tsq-section {
+  padding: 80px 0;
+  background: var(--tsq-obsidian);
+}
+.tsq-section--champagne { background: var(--tsq-pearl); }
+.tsq-section__inner {
+  max-width: var(--page-width, 1200px);
+  margin: 0 auto;
+  padding: 0 40px;
+  text-align: center;
+}
+@media (max-width: 768px) { .tsq-section__inner { padding: 0 20px; } }
+.tsq-section-title {
+  font-family: var(--tsq-h) !important;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem) !important;
+  font-weight: 400 !important;
+  color: var(--tsq-parchment) !important;
+  margin: 0 !important;
+}
+.tsq-section--champagne .tsq-section-title { color: var(--tsq-nearblack) !important; }
+
+/* ─── TSQ buttons (section-level CTAs) ─── */
+.tsq-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--tsq-ui) !important; font-size: 11px !important;
+  font-weight: 700 !important; letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  padding: 14px 36px !important;
+  border-radius: var(--tsq-r) !important;
+  cursor: pointer !important; text-decoration: none !important;
+  transition: all var(--tsq-ease) !important;
+}
+.tsq-btn--primary {
+  background: var(--tsq-gold) !important;
+  color: var(--tsq-obsidian) !important;
+  border: none !important;
+}
+.tsq-btn--primary:hover { background: #b8924a !important; }
+.tsq-btn--secondary {
+  background: transparent !important;
+  border: 1px solid var(--tsq-gold) !important;
+  color: var(--tsq-gold) !important;
+}
+.tsq-btn--secondary:hover {
+  background: var(--tsq-gold) !important;
+  color: var(--tsq-obsidian) !important;
+}
+
 /* Eyebrows / labels */
 .tsq-eyebrow,
 [class*="eyebrow"], [class*="overline"], .caption {
@@ -578,6 +627,97 @@ ul.grid, ol.grid {
   line-height: 1.9 !important;
   margin-bottom: 20px !important;
 }
+
+/* ═══════════════════════════════════════════════════
+   STEP 14b — STORY SECTION (two-column)
+   ═══════════════════════════════════════════════════ */
+.tsq-story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 520px;
+}
+@media (max-width: 768px) { .tsq-story { grid-template-columns: 1fr; } }
+.tsq-story__image {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block; min-height: 400px;
+}
+.tsq-story__text {
+  background: var(--tsq-obsidian);
+  padding: 64px 52px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+@media (max-width: 768px) { .tsq-story__text { padding: 48px 24px; } }
+.tsq-story__overline {
+  font-family: var(--tsq-ui) !important; font-size: 10px !important;
+  letter-spacing: 0.22em !important; text-transform: uppercase !important;
+  color: var(--tsq-gold) !important; margin: 0 0 20px !important;
+}
+.tsq-story__heading {
+  font-family: var(--tsq-h) !important;
+  font-size: clamp(1.8rem, 3vw, 2.6rem) !important;
+  font-weight: 400 !important; color: var(--tsq-parchment) !important;
+  margin: 0 0 24px !important; line-height: 1.2 !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   STEP 14c — FEATURED PRODUCTS GRID
+   ═══════════════════════════════════════════════════ */
+.tsq-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+@media (max-width: 600px) { .tsq-products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+.tsq-product-card {
+  background: var(--tsq-nearblack);
+  border: 1px solid var(--tsq-gold-border);
+  border-radius: var(--tsq-r); overflow: hidden;
+  transition: border-color var(--tsq-ease), transform var(--tsq-ease);
+  display: flex; flex-direction: column;
+}
+.tsq-product-card:hover { border-color: var(--tsq-gold); transform: translateY(-4px); }
+.tsq-product-card__image-wrap {
+  display: block; aspect-ratio: 1 / 1;
+  overflow: hidden; background: #0a0a0a;
+}
+.tsq-product-card__image {
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: center;
+  transition: transform 0.4s ease;
+}
+.tsq-product-card:hover .tsq-product-card__image { transform: scale(1.04); }
+.tsq-product-card__details {
+  padding: 16px; flex: 1;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.tsq-product-card__brand {
+  font-family: var(--tsq-ui) !important; font-size: 10px !important;
+  letter-spacing: 0.14em !important; text-transform: uppercase !important;
+  color: var(--tsq-gold) !important; text-decoration: none !important;
+}
+.tsq-product-card__title {
+  font-family: var(--tsq-h) !important; font-size: 17px !important;
+  color: var(--tsq-parchment) !important; font-weight: 400 !important;
+  text-decoration: none !important; line-height: 1.25 !important;
+}
+.tsq-product-card__stars { color: var(--tsq-gold); font-size: 12px; letter-spacing: 1px; margin: 2px 0; }
+.tsq-product-card__price {
+  font-family: var(--tsq-ui) !important; font-size: 14px !important;
+  color: var(--tsq-text-2) !important; margin: 4px 0 0 !important;
+}
+.tsq-product-card__btn {
+  display: block; margin-top: auto; padding-top: 14px;
+  font-family: var(--tsq-ui) !important; font-size: 11px !important;
+  letter-spacing: 0.14em !important; text-transform: uppercase !important;
+  color: var(--tsq-gold) !important; text-decoration: none !important;
+  border-top: 1px solid var(--tsq-gold-border);
+  padding-top: 12px; margin-top: 12px;
+  transition: color var(--tsq-ease) !important;
+}
+.tsq-product-card__btn:hover { color: var(--tsq-parchment) !important; }
 
 /* ═══════════════════════════════════════════════════
    STEP 15 — BRANDS PAGE
