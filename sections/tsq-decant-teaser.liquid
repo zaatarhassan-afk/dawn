@@ -1,0 +1,122 @@
+<section class="tsq-decant-teaser">
+  <div class="tsq-decant-teaser__inner">
+    <p class="tsq-decant-teaser__eyebrow">Try Before You Buy</p>
+    <h2 class="tsq-decant-teaser__heading">Discover Without<br>the Commitment</h2>
+    <div class="tsq-decant-teaser__rule"></div>
+    <p class="tsq-decant-teaser__body">Every fragrance in our range is available as a hand-poured decant — from 5ml samples to 30ml travel sizes. Find your signature scent before committing to a full bottle.</p>
+    <div class="tsq-decant-teaser__stats">
+      <div class="tsq-decant-teaser__stat">
+        <span class="tsq-decant-teaser__stat-num">5ml</span>
+        <span class="tsq-decant-teaser__stat-label">Samples from $15</span>
+      </div>
+      <div class="tsq-decant-teaser__stat-div"></div>
+      <div class="tsq-decant-teaser__stat">
+        <span class="tsq-decant-teaser__stat-num">10ml</span>
+        <span class="tsq-decant-teaser__stat-label">Decants from $25</span>
+      </div>
+      <div class="tsq-decant-teaser__stat-div"></div>
+      <div class="tsq-decant-teaser__stat">
+        <span class="tsq-decant-teaser__stat-num">30ml</span>
+        <span class="tsq-decant-teaser__stat-label">Travel sizes from $45</span>
+      </div>
+    </div>
+    <a href="/collections/all-decants" class="tsq-decant-teaser__cta">Explore Decants →</a>
+  </div>
+</section>
+
+<style>
+.tsq-decant-teaser {
+  background: var(--tsq-obsidian, #090807);
+  padding: 96px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.tsq-decant-teaser::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(198,161,91,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.tsq-decant-teaser__inner {
+  position: relative; z-index: 1;
+  max-width: 680px; margin: 0 auto;
+}
+.tsq-decant-teaser__eyebrow {
+  font-family: 'Manrope', sans-serif;
+  font-size: 10px; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--tsq-gold, #C6A15B);
+  margin: 0 0 16px;
+}
+.tsq-decant-teaser__heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 300; line-height: 1.1;
+  color: var(--tsq-text-d1, rgba(250,247,242,0.93));
+  margin: 0 0 24px; letter-spacing: 0.02em;
+}
+.tsq-decant-teaser__rule {
+  width: 40px; height: 1px;
+  background: var(--tsq-gold, #C6A15B);
+  margin: 0 auto 28px;
+}
+.tsq-decant-teaser__body {
+  font-family: 'Lora', serif;
+  font-size: 16px; line-height: 1.8;
+  color: var(--tsq-text-d2, rgba(250,247,242,0.62));
+  margin: 0 0 48px;
+}
+.tsq-decant-teaser__stats {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 48px;
+}
+.tsq-decant-teaser__stat { padding: 0 40px; text-align: center; }
+.tsq-decant-teaser__stat-div {
+  width: 1px; height: 40px;
+  background: rgba(216,201,182,0.2);
+}
+.tsq-decant-teaser__stat-num {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 400;
+  color: var(--tsq-gold, #C6A15B);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.tsq-decant-teaser__stat-label {
+  display: block;
+  font-family: 'Manrope', sans-serif;
+  font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tsq-text-d3, rgba(250,247,242,0.35));
+}
+.tsq-decant-teaser__cta {
+  display: inline-block;
+  font-family: 'Manrope', sans-serif;
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; font-weight: 600;
+  color: var(--tsq-obsidian, #090807) !important;
+  background: var(--tsq-gold, #C6A15B);
+  padding: 14px 40px;
+  text-decoration: none !important;
+  transition: background 0.2s ease;
+}
+.tsq-decant-teaser__cta:hover {
+  background: var(--tsq-amber, #A86F3C);
+  color: #fff !important;
+}
+@media (max-width: 640px) {
+  .tsq-decant-teaser__stats { flex-direction: column; gap: 24px; }
+  .tsq-decant-teaser__stat-div { display: none; }
+  .tsq-decant-teaser { padding: 64px 20px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "TSQ Decant Teaser",
+  "tag": "section",
+  "class": "shopify-section",
+  "presets": [{ "name": "TSQ Decant Teaser" }]
+}
+{% endschema %}

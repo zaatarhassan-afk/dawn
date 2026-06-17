@@ -1,0 +1,147 @@
+{% liquid
+  assign tab_1_coll = collections['all']
+  assign tab_2_coll = collections['all-decants']
+  assign tab_3_coll = collections['new-arrivals']
+  if tab_3_coll == blank or tab_3_coll.products_count == 0
+    assign tab_3_coll = tab_1_coll
+  endif
+%}
+
+<section class="tsq-tabs-section">
+  <div class="tsq-tabs-head">
+    <p class="tsq-eyebrow">Our Selection</p>
+    <h2 class="tsq-section-title">Explore the Collection</h2>
+    <div class="tsq-divider"></div>
+    <nav class="tsq-tabs-nav" role="tablist" aria-label="Product collections">
+      <button class="tsq-tab-btn tsq-tab-btn--active" role="tab" aria-selected="true" data-tab="bestsellers">Best Sellers</button>
+      <button class="tsq-tab-btn" role="tab" aria-selected="false" data-tab="decants">Decants</button>
+      <button class="tsq-tab-btn" role="tab" aria-selected="false" data-tab="new">New Arrivals</button>
+    </nav>
+  </div>
+
+  <div class="tsq-tab-panel tsq-tab-panel--active" data-panel="bestsellers" role="tabpanel">
+    <div class="tsq-products-grid">
+      {% for product in tab_1_coll.products limit: 8 %}
+        <div class="tsq-product-card tsq-animate-in" style="animation-delay:{{ forloop.index0 | times: 0.06 }}s">
+          <a href="{{ product.url }}" class="tsq-product-card__image-wrap" tabindex="-1" aria-hidden="true">
+            {% if product.featured_image %}
+              <img class="tsq-product-card__image" src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="500" height="500">
+            {% else %}
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--tsq-mocha,#7B6652);font-family:var(--tsq-ui);font-size:14px;background:var(--tsq-champagne,#EFE5D2);">No Image</div>
+            {% endif %}
+          </a>
+          <div class="tsq-product-card__details">
+            {% if product.vendor != blank %}<a href="/collections/{{ product.vendor | handleize }}" class="tsq-product-card__brand">{{ product.vendor }}</a>{% endif %}
+            <a href="{{ product.url }}" class="tsq-product-card__title">{{ product.title }}</a>
+            <div class="tsq-product-card__price">{{ product.price | money }}</div>
+            <a href="{{ product.url }}" class="tsq-product-card__btn">View Fragrance</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="tsq-tabs-view-all"><a href="/collections/all" class="tsq-btn tsq-btn--secondary">View All Fragrances</a></div>
+  </div>
+
+  <div class="tsq-tab-panel" data-panel="decants" role="tabpanel" hidden>
+    <div class="tsq-products-grid">
+      {% for product in tab_2_coll.products limit: 8 %}
+        <div class="tsq-product-card tsq-animate-in" style="animation-delay:{{ forloop.index0 | times: 0.06 }}s">
+          <a href="{{ product.url }}" class="tsq-product-card__image-wrap" tabindex="-1" aria-hidden="true">
+            {% if product.featured_image %}
+              <img class="tsq-product-card__image" src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="500" height="500">
+            {% else %}
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--tsq-mocha,#7B6652);font-family:var(--tsq-ui);font-size:14px;background:var(--tsq-champagne,#EFE5D2);">No Image</div>
+            {% endif %}
+          </a>
+          <div class="tsq-product-card__details">
+            {% if product.vendor != blank %}<a href="/collections/{{ product.vendor | handleize }}" class="tsq-product-card__brand">{{ product.vendor }}</a>{% endif %}
+            <a href="{{ product.url }}" class="tsq-product-card__title">{{ product.title }}</a>
+            <div class="tsq-product-card__price">{{ product.price_min | money }}</div>
+            <a href="{{ product.url }}" class="tsq-product-card__btn">View Fragrance</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="tsq-tabs-view-all"><a href="/collections/all-decants" class="tsq-btn tsq-btn--secondary">View All Decants</a></div>
+  </div>
+
+  <div class="tsq-tab-panel" data-panel="new" role="tabpanel" hidden>
+    <div class="tsq-products-grid">
+      {% for product in tab_3_coll.products limit: 8 %}
+        <div class="tsq-product-card tsq-animate-in" style="animation-delay:{{ forloop.index0 | times: 0.06 }}s">
+          <a href="{{ product.url }}" class="tsq-product-card__image-wrap" tabindex="-1" aria-hidden="true">
+            {% if product.featured_image %}
+              <img class="tsq-product-card__image" src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="500" height="500">
+            {% else %}
+              <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--tsq-mocha,#7B6652);font-family:var(--tsq-ui);font-size:14px;background:var(--tsq-champagne,#EFE5D2);">No Image</div>
+            {% endif %}
+          </a>
+          <div class="tsq-product-card__details">
+            {% if product.vendor != blank %}<a href="/collections/{{ product.vendor | handleize }}" class="tsq-product-card__brand">{{ product.vendor }}</a>{% endif %}
+            <a href="{{ product.url }}" class="tsq-product-card__title">{{ product.title }}</a>
+            <div class="tsq-product-card__price">{{ product.price_min | money }}</div>
+            <a href="{{ product.url }}" class="tsq-product-card__btn">View Fragrance</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="tsq-tabs-view-all"><a href="/collections/all" class="tsq-btn tsq-btn--secondary">View All →</a></div>
+  </div>
+</section>
+
+<style>
+.tsq-tabs-section {
+  background: var(--tsq-pearl, #FAF8F3);
+  padding: 72px 20px 80px;
+}
+.tsq-tabs-head { text-align: center; margin-bottom: 0; }
+.tsq-tabs-nav {
+  display: flex; justify-content: center; gap: 0;
+  border-bottom: 1px solid var(--tsq-stone, #D8C9B6);
+  margin-top: 28px; margin-bottom: 40px;
+}
+.tsq-tab-btn {
+  font-family: 'Manrope', sans-serif;
+  font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; font-weight: 500;
+  color: var(--tsq-mocha, #7B6652);
+  background: none; border: none; border-bottom: 2px solid transparent;
+  padding: 12px 28px; cursor: pointer; margin-bottom: -1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.tsq-tab-btn:hover { color: var(--tsq-charcoal, #1B1917); }
+.tsq-tab-btn--active { color: var(--tsq-charcoal, #1B1917); border-bottom-color: var(--tsq-gold, #C6A15B); }
+.tsq-tab-panel { display: none; }
+.tsq-tab-panel--active { display: block; }
+.tsq-tabs-view-all { text-align: center; margin-top: 40px; }
+</style>
+
+<script>
+(function(){
+  var section = document.currentScript ? document.currentScript.closest('.shopify-section') : null;
+  if(!section) section = document.querySelector('.tsq-tabs-section') ? document.querySelector('.tsq-tabs-section').closest('.shopify-section') : null;
+  if(!section) return;
+  var btns = section.querySelectorAll('.tsq-tab-btn');
+  var panels = section.querySelectorAll('.tsq-tab-panel');
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = this.dataset.tab;
+      btns.forEach(function(b){ b.classList.remove('tsq-tab-btn--active'); b.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.classList.remove('tsq-tab-panel--active'); p.hidden = true; });
+      this.classList.add('tsq-tab-btn--active');
+      this.setAttribute('aria-selected','true');
+      var panel = section.querySelector('[data-panel="'+target+'"]');
+      if(panel){ panel.classList.add('tsq-tab-panel--active'); panel.hidden = false; }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "TSQ Bestsellers Tabs",
+  "tag": "div",
+  "class": "shopify-section",
+  "presets": [{ "name": "TSQ Bestsellers Tabs" }]
+}
+{% endschema %}

@@ -17,24 +17,28 @@
       "type": "tsq-trust",
       "settings": {}
     },
-    "tsq-story": {
-      "type": "tsq-story",
+    "tsq-bestsellers-tabs": {
+      "type": "tsq-bestsellers-tabs",
       "settings": {}
     },
-    "tsq-tiles": {
+    "tsq-brand-spotlight": {
+      "type": "tsq-brand-spotlight",
+      "settings": {}
+    },
+    "tsq-collection-tiles": {
       "type": "tsq-collection-tiles",
-      "settings": {}
-    },
-    "tsq-featured": {
-      "type": "tsq-featured-products",
       "settings": {}
     },
     "tsq-reviews-banner": {
       "type": "tsq-reviews-banner",
       "settings": {}
     },
-    "tsq-brands": {
-      "type": "tsq-brand-spotlight",
+    "tsq-decant-teaser": {
+      "type": "tsq-decant-teaser",
+      "settings": {}
+    },
+    "tsq-blog-preview": {
+      "type": "tsq-blog-preview",
       "settings": {}
     },
     "tsq-newsletter": {
@@ -45,11 +49,12 @@
   "order": [
     "tsq-hero",
     "tsq-trust",
-    "tsq-story",
-    "tsq-tiles",
-    "tsq-featured",
+    "tsq-bestsellers-tabs",
+    "tsq-brand-spotlight",
+    "tsq-collection-tiles",
     "tsq-reviews-banner",
-    "tsq-brands",
+    "tsq-decant-teaser",
+    "tsq-blog-preview",
     "tsq-newsletter"
   ]
 }

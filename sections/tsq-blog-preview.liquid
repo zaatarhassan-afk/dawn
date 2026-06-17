@@ -1,0 +1,129 @@
+{% liquid
+  assign blog_handle = section.settings.blog | default: 'news'
+  assign preview_blog = blogs[blog_handle]
+  assign article_limit = 3
+%}
+
+{% if preview_blog and preview_blog.articles_count > 0 %}
+<section class="tsq-blog-preview">
+  <div class="tsq-blog-preview__head">
+    <p class="tsq-eyebrow">From the Journal</p>
+    <h2 class="tsq-section-title">{{ section.settings.title | default: 'Notes & Stories' }}</h2>
+    <div class="tsq-divider"></div>
+  </div>
+
+  <div class="tsq-blog-preview__grid">
+    {% for article in preview_blog.articles limit: article_limit %}
+      <a href="{{ article.url }}" class="tsq-blog-card">
+        <div class="tsq-blog-card__img-wrap">
+          {% if article.image %}
+            <img src="{{ article.image | image_url: width: 600 }}" alt="{{ article.image.alt | default: article.title | escape }}" class="tsq-blog-card__img" loading="lazy">
+          {% else %}
+            <div class="tsq-blog-card__img-placeholder"></div>
+          {% endif %}
+        </div>
+        <div class="tsq-blog-card__body">
+          <p class="tsq-blog-card__date">{{ article.published_at | date: '%B %d, %Y' }}</p>
+          <h3 class="tsq-blog-card__title">{{ article.title }}</h3>
+          {% if article.excerpt != blank %}
+            <p class="tsq-blog-card__excerpt">{{ article.excerpt | strip_html | truncate: 120 }}</p>
+          {% endif %}
+          <span class="tsq-blog-card__read-more">Read More →</span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+
+  {% if preview_blog.articles_count > article_limit %}
+    <div style="text-align:center;margin-top:40px;">
+      <a href="{{ preview_blog.url }}" class="tsq-btn tsq-btn--secondary">View All Articles</a>
+    </div>
+  {% endif %}
+</section>
+{% endif %}
+
+<style>
+.tsq-blog-preview {
+  background: var(--tsq-champagne, #EFE5D2);
+  padding: 72px 20px 80px;
+  border-top: 1px solid var(--tsq-stone, #D8C9B6);
+  border-bottom: 1px solid var(--tsq-stone, #D8C9B6);
+}
+.tsq-blog-preview__head { text-align: center; margin-bottom: 48px; }
+.tsq-blog-preview__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+@media (max-width: 768px) { .tsq-blog-preview__grid { grid-template-columns: 1fr; gap: 20px; } }
+.tsq-blog-card {
+  background: #fff;
+  border: 1px solid var(--tsq-stone, #D8C9B6);
+  text-decoration: none !important;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tsq-blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(27,25,23,0.08);
+}
+.tsq-blog-card__img-wrap {
+  width: 100%; height: 220px; overflow: hidden;
+  background: var(--tsq-champagne, #EFE5D2);
+}
+.tsq-blog-card__img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.tsq-blog-card:hover .tsq-blog-card__img { transform: scale(1.04); }
+.tsq-blog-card__img-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, var(--tsq-champagne, #EFE5D2), var(--tsq-stone, #D8C9B6));
+}
+.tsq-blog-card__body { padding: 20px 22px 24px; }
+.tsq-blog-card__date {
+  font-family: 'Manrope', sans-serif;
+  font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--tsq-gold, #C6A15B);
+  margin: 0 0 8px;
+}
+.tsq-blog-card__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 400;
+  color: var(--tsq-charcoal, #1B1917);
+  margin: 0 0 10px; line-height: 1.3;
+}
+.tsq-blog-card__excerpt {
+  font-family: 'Lora', serif;
+  font-size: 14px; line-height: 1.7;
+  color: var(--tsq-mocha, #7B6652);
+  margin: 0 0 16px;
+}
+.tsq-blog-card__read-more {
+  font-family: 'Manrope', sans-serif;
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tsq-charcoal, #1B1917);
+  border-bottom: 1px solid rgba(27,25,23,0.25);
+  padding-bottom: 1px;
+}
+.tsq-blog-card:hover .tsq-blog-card__read-more {
+  color: var(--tsq-gold, #C6A15B);
+  border-bottom-color: rgba(198,161,91,0.5);
+}
+</style>
+
+{% schema %}
+{
+  "name": "TSQ Blog Preview",
+  "tag": "div",
+  "class": "shopify-section",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "text", "id": "title", "label": "Section title", "default": "Notes & Stories" }
+  ],
+  "presets": [{ "name": "TSQ Blog Preview" }]
+}
+{% endschema %}
