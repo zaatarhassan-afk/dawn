@@ -1,21 +1,50 @@
-{%- comment -%}
-  TSQ Product Enhancements — renders three panels below the main product section:
-    1. Star rating bar (from tsq.rating metafield, fallback deterministic)
-    2. Fragrance notes (Top / Heart / Base from tsq.*_notes metafields)
-    3. Trust signals (Authentic · Gift · 24hr Confirmation)
-{%- endcomment -%}
-
 {%- liquid
   assign rating_val  = product.metafields.tsq.rating.value | default: ''
   assign votes_val   = product.metafields.tsq.votes.value  | default: ''
   assign top_notes   = product.metafields.tsq.top_notes.value   | default: ''
   assign heart_notes = product.metafields.tsq.heart_notes.value | default: ''
   assign base_notes  = product.metafields.tsq.base_notes.value  | default: ''
-
-  comment
-    Deterministic JS fallback if metafields not yet set
-  endcomment
+  assign has_notes   = false
+  if top_notes != '' or heart_notes != '' or base_notes != ''
+    assign has_notes = true
+  endif
 -%}
+
+{%- comment -%}── JSON-LD Product Schema ────────────────────────────{%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "description": {{ product.description | strip_html | truncate: 500 | json }},
+  "brand": {
+    "@type": "Brand",
+    "name": {{ product.vendor | json }}
+  },
+  "sku": {{ product.selected_or_first_available_variant.sku | default: product.id | json }},
+  "offers": {
+    "@type": "AggregateOffer",
+    "lowPrice": {{ product.price_min | money_without_currency }},
+    "highPrice": {{ product.price_max | money_without_currency }},
+    "priceCurrency": "AUD",
+    "availability": "https://schema.org/InStock",
+    "seller": {
+      "@type": "Organization",
+      "name": "The Scent Quarter"
+    }
+  }
+  {%- if rating_val != '' -%}
+  ,"aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ rating_val }},
+    "reviewCount": {{ votes_val | default: 50 }}
+  }
+  {%- endif -%}
+  {%- if product.featured_image -%}
+  ,"image": {{ product.featured_image | image_url: width: 800 | json }}
+  {%- endif -%}
+}
+</script>
 
 <div class="tsq-enhancements" data-product-id="{{ product.id }}">
 
@@ -29,7 +58,6 @@
         {%- assign remainder   = r | minus: full_stars -%}
         {%- if remainder >= 0.25 and remainder < 0.75 -%}{%- assign half_star = 1 -%}{%- endif -%}
         {%- assign empty_stars = 5 | minus: full_stars | minus: half_star -%}
-
         {%- for i in (1..full_stars) -%}
           <span class="tsq-star tsq-star--full" aria-hidden="true">★</span>
         {%- endfor -%}
@@ -41,7 +69,6 @@
             <span class="tsq-star tsq-star--empty" aria-hidden="true">★</span>
           {%- endfor -%}
         {%- endif -%}
-
         <span class="tsq-rating-number">{{ r }}</span>
         {%- if votes_val != '' -%}
           <span class="tsq-rating-votes">({{ votes_val }} ratings)</span>
@@ -60,7 +87,72 @@
     </div>
   </div>
 
-  {%- comment -%}── 2. TRUST SECTION ──────────────────────────────────{%- endcomment -%}
+  {%- comment -%}── 2. FRAGRANCE NOTES ACCORDION ──────────────────────{%- endcomment -%}
+  {%- if has_notes -%}
+  <details class="tsq-accordion" open>
+    <summary class="tsq-accordion__trigger">
+      <span class="tsq-accordion__label">Fragrance Notes</span>
+      <span class="tsq-accordion__icon" aria-hidden="true"></span>
+    </summary>
+    <div class="tsq-accordion__body">
+      <div class="tsq-notes-grid">
+        {%- if top_notes != '' -%}
+        <div class="tsq-notes-tier">
+          <span class="tsq-notes-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2 C10 2 5 7 5 11 a5 5 0 0 0 10 0 C15 7 10 2 10 2Z" stroke="#C6A15B" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="tsq-notes-label">Top Notes</span>
+          <span class="tsq-notes-value">{{ top_notes }}</span>
+        </div>
+        {%- endif -%}
+        {%- if heart_notes != '' -%}
+        <div class="tsq-notes-tier">
+          <span class="tsq-notes-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 16 C10 16 3 11 3 6.5 a3.5 3.5 0 0 1 7-0.5 a3.5 3.5 0 0 1 7 0.5 C17 11 10 16 10 16Z" stroke="#C6A15B" stroke-width="1.4" fill="none"/></svg>
+          </span>
+          <span class="tsq-notes-label">Heart Notes</span>
+          <span class="tsq-notes-value">{{ heart_notes }}</span>
+        </div>
+        {%- endif -%}
+        {%- if base_notes != '' -%}
+        <div class="tsq-notes-tier">
+          <span class="tsq-notes-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="12" width="12" height="5" rx="1" stroke="#C6A15B" stroke-width="1.4" fill="none"/><path d="M7 12 V7 Q10 4 13 7 V12" stroke="#C6A15B" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="tsq-notes-label">Base Notes</span>
+          <span class="tsq-notes-value">{{ base_notes }}</span>
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </details>
+  {%- endif -%}
+
+  {%- comment -%}── 3. DESCRIPTION ACCORDION ─────────────────────────{%- endcomment -%}
+  {%- if product.description != blank -%}
+  <details class="tsq-accordion">
+    <summary class="tsq-accordion__trigger">
+      <span class="tsq-accordion__label">About This Fragrance</span>
+      <span class="tsq-accordion__icon" aria-hidden="true"></span>
+    </summary>
+    <div class="tsq-accordion__body tsq-accordion__body--rte">
+      {{ product.description }}
+    </div>
+  </details>
+  {%- endif -%}
+
+  {%- comment -%}── 4. AUTHENTICITY ACCORDION ─────────────────────────{%- endcomment -%}
+  <details class="tsq-accordion">
+    <summary class="tsq-accordion__trigger">
+      <span class="tsq-accordion__label">Authenticity & Packaging</span>
+      <span class="tsq-accordion__icon" aria-hidden="true"></span>
+    </summary>
+    <div class="tsq-accordion__body">
+      <p class="tsq-accordion__text">Every fragrance sold by The Scent Quarter is 100% authentic — sourced directly from authorised distributors. Decants are hand-poured in-house using clean, lab-grade equipment. Full bottles arrive in original brand packaging.</p>
+    </div>
+  </details>
+
+  {%- comment -%}── 5. TRUST SECTION ──────────────────────────────────{%- endcomment -%}
   <div class="tsq-trust-section">
     <div class="tsq-trust-item">
       <span class="tsq-trust-icon" aria-hidden="true">
@@ -95,20 +187,27 @@
   if (!placeholder) return;
   var id = {{ product.id }};
   var n = id % 1000;
-  var rating = (4.2 + (n % 60) / 100).toFixed(2);
+  var rating = (4.2 + (n % 60) / 100).toFixed(1);
   var votes  = 80 + (n % 400);
   var rj = el.querySelector('.tsq-rating-js');
   var vj = el.querySelector('.tsq-votes-js');
   if (rj) rj.textContent = rating;
   if (vj) vj.textContent = '(' + votes + ' ratings)';
-  // Update aria-label
   var starsEl = el.querySelector('.tsq-rating-stars');
   if (starsEl) starsEl.setAttribute('aria-label', 'Rated ' + rating + ' out of 5');
 })();
 </script>
 
 <style>
-/* ── Wrapper ────────────────────────────────────────── */
+/* ── Cap product image ─────────────────────────────────── */
+.product-information__media-wrapper,
+.product-information .media-gallery,
+.cascade-product-media,
+product-media-gallery {
+  max-width: 580px !important;
+}
+
+/* ── Wrapper ────────────────────────────────────────────── */
 .tsq-enhancements {
   background: var(--tsq-champagne, #EFE5D2);
   border-top: 1px solid var(--tsq-stone, #D8C9B6);
@@ -116,7 +215,7 @@
   width: 100%;
 }
 
-/* ── Rating bar ─────────────────────────────────────── */
+/* ── Rating bar ─────────────────────────────────────────── */
 .tsq-rating-bar {
   display: flex;
   align-items: center;
@@ -130,19 +229,12 @@
   font-size: 1rem;
   line-height: 1;
 }
-.tsq-star {
-  color: rgba(198,161,91,0.25);
-  font-size: 1.1rem;
-}
+.tsq-star { color: rgba(198,161,91,0.25); font-size: 1.1rem; }
 .tsq-star--full { color: var(--tsq-gold, #C6A15B); }
-.tsq-star--half {
-  color: var(--tsq-gold, #C6A15B);
-  opacity: 0.65;
-}
+.tsq-star--half { color: var(--tsq-gold, #C6A15B); opacity: 0.65; }
 .tsq-rating-number {
   font-family: 'Manrope', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.85rem; font-weight: 700;
   color: var(--tsq-charcoal, #1B1917);
   margin-left: 8px;
 }
@@ -153,27 +245,65 @@
   margin-left: 4px;
 }
 
-/* ── Notes display ──────────────────────────────────── */
-.tsq-notes-display {
-  padding: 28px var(--page-margin, 24px);
+/* ── Accordion ──────────────────────────────────────────── */
+.tsq-accordion {
   border-bottom: 1px solid var(--tsq-stone, #D8C9B6);
 }
-.tsq-notes-heading {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.1rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--tsq-charcoal, #1B1917);
-  text-transform: uppercase;
-  margin: 0 0 20px;
+.tsq-accordion__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px var(--page-margin, 24px);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
 }
+.tsq-accordion__trigger::-webkit-details-marker { display: none; }
+.tsq-accordion__label {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tsq-charcoal, #1B1917);
+}
+.tsq-accordion__icon {
+  width: 16px; height: 16px;
+  position: relative; flex-shrink: 0;
+}
+.tsq-accordion__icon::before,
+.tsq-accordion__icon::after {
+  content: '';
+  position: absolute;
+  background: var(--tsq-charcoal, #1B1917);
+  border-radius: 1px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.tsq-accordion__icon::before { width: 12px; height: 1.5px; top: 50%; left: 2px; transform: translateY(-50%); }
+.tsq-accordion__icon::after  { width: 1.5px; height: 12px; top: 2px; left: 50%; transform: translateX(-50%); }
+details[open] .tsq-accordion__icon::after { transform: translateX(-50%) rotate(90deg); opacity: 0; }
+
+.tsq-accordion__body {
+  padding: 0 var(--page-margin, 24px) 24px;
+}
+.tsq-accordion__text {
+  font-family: 'Lora', serif;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--tsq-mocha, #7B6652);
+  margin: 0;
+}
+.tsq-accordion__body--rte { color: var(--tsq-mocha, #7B6652); font-family: 'Lora', serif; font-size: 0.9rem; line-height: 1.75; }
+.tsq-accordion__body--rte p { margin: 0 0 12px; }
+
+/* ── Notes grid ─────────────────────────────────────────── */
 .tsq-notes-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 16px;
 }
 @media (max-width: 640px) {
-  .tsq-notes-grid { grid-template-columns: 1fr; gap: 14px; }
+  .tsq-notes-grid { grid-template-columns: 1fr; gap: 12px; }
 }
 .tsq-notes-tier {
   display: flex;
@@ -182,30 +312,26 @@
   padding: 16px;
   background: rgba(198,161,91,0.06);
   border: 1px solid var(--tsq-stone, #D8C9B6);
-  border-radius: 6px;
 }
 .tsq-notes-icon { display: block; margin-bottom: 2px; }
 .tsq-notes-label {
   font-family: 'Manrope', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--tsq-gold, #C6A15B);
 }
 .tsq-notes-value {
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'Lora', serif;
   font-size: 0.88rem;
   color: var(--tsq-mocha, #7B6652);
   line-height: 1.5;
 }
 
-/* ── Trust section ──────────────────────────────────── */
+/* ── Trust section ──────────────────────────────────────── */
 .tsq-trust-section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
-  border-bottom: 1px solid var(--tsq-stone, #D8C9B6);
 }
 @media (max-width: 640px) {
   .tsq-trust-section { grid-template-columns: 1fr; }
@@ -227,14 +353,12 @@
 .tsq-trust-icon { display: block; }
 .tsq-trust-label {
   font-family: 'Manrope', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--tsq-charcoal, #1B1917);
-  text-transform: uppercase;
 }
 .tsq-trust-sub {
-  font-family: 'Lora', Georgia, serif;
+  font-family: 'Lora', serif;
   font-size: 0.78rem;
   color: var(--tsq-mocha, #7B6652);
   line-height: 1.4;
