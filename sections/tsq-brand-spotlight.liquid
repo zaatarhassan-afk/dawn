@@ -4,12 +4,12 @@
     <div class="tsq-divider"></div>
     <h2 class="tsq-section-title">Our Fragrance Houses</h2>
     <p style="font-family:var(--tsq-b);font-size:15px;color:var(--tsq-text-2);max-width:520px;margin:0 auto 48px;line-height:1.7;">
-      Curated from the finest Arabian perfumers. Authentic, exceptional, available as decants from $15.
+      Curated from the world's finest fragrance houses. Authentic, exceptional, available as decants from $15.
     </p>
   </div>
 
   <div class="tsq-brands-grid">
-    {%- assign brand_handles = "afnan,ahmed-al-maghribi,armaf,arabian-oud,fragrance-world,gissah,khadlaj,lattafa,maison-alhambra,rasasi,rayhaan,reef,swiss-arabian" | split: "," -%}
+    {%- assign brand_handles = "afnan,ahmed-al-maghribi,armaf,arabian-oud,emir,fragrance-world,gissah,ibraq,khadlaj,lattafa,maison-alhambra,paris-corner,rasasi,rayhaan,reef,swiss-arabian" | split: "," -%}
     {%- for handle in brand_handles -%}
       {%- assign col = collections[handle] -%}
       {%- if col -%}

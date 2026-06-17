@@ -96,9 +96,12 @@
 }
 .tsq-tabs-head { text-align: center; margin-bottom: 0; }
 .tsq-tabs-nav {
-  display: flex; justify-content: center; gap: 0;
+  display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
   border-bottom: 1px solid var(--tsq-stone, #D8C9B6);
   margin-top: 28px; margin-bottom: 40px;
+}
+@media (max-width: 480px) {
+  .tsq-tab-btn { padding: 10px 18px; font-size: 10px; letter-spacing: 0.08em; }
 }
 .tsq-tab-btn {
   font-family: 'Manrope', sans-serif;
