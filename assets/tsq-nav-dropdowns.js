@@ -94,16 +94,41 @@
         background: rgba(198,161,91,0.07) !important;
       }
       .tsq-nav-dropdown--brands {
-        min-width: 340px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        padding: 6px 0;
+        min-width: 480px;
+        padding: 12px 0 0;
         left: 0;
         transform: translateY(-4px);
       }
       .tsq-nav-parent:hover .tsq-nav-dropdown--brands,
       .tsq-nav-parent:focus-within .tsq-nav-dropdown--brands {
         transform: translateY(0);
+      }
+      .tsq-nav-dropdown--brands .tsq-brands-grid-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        padding: 0;
+      }
+      .tsq-nav-dropdown--brands .tsq-brands-grid-panel a {
+        border-bottom: 1px solid rgba(9,8,7,0.06) !important;
+      }
+      .tsq-nav-dropdown--brands .tsq-nav-view-all {
+        display: block !important;
+        padding: 10px 20px !important;
+        font-family: 'Manrope', sans-serif !important;
+        font-size: 10px !important;
+        letter-spacing: 0.14em !important;
+        color: #C6A15B !important;
+        text-transform: uppercase !important;
+        text-align: center !important;
+        background: rgba(198,161,91,0.06) !important;
+        border-top: 1px solid rgba(198,161,91,0.2) !important;
+        border-bottom: none !important;
+        grid-column: 1 / -1;
+        transition: background 0.15s !important;
+      }
+      .tsq-nav-dropdown--brands .tsq-nav-view-all:hover {
+        background: rgba(198,161,91,0.12) !important;
+        color: #A86F3C !important;
       }
       .tsq-nav-chevron {
         font-size: 9px;
@@ -119,12 +144,30 @@
   function buildPanel(label, items) {
     const div = document.createElement('div');
     div.className = label === 'Brands' ? 'tsq-nav-dropdown tsq-nav-dropdown--brands' : 'tsq-nav-dropdown';
-    items.forEach(item => {
-      const a = document.createElement('a');
-      a.href = item.href;
-      a.textContent = item.label;
-      div.appendChild(a);
-    });
+
+    if (label === 'Brands') {
+      const grid = document.createElement('div');
+      grid.className = 'tsq-brands-grid-panel';
+      items.forEach(item => {
+        const a = document.createElement('a');
+        a.href = item.href;
+        a.textContent = item.label;
+        grid.appendChild(a);
+      });
+      const viewAll = document.createElement('a');
+      viewAll.href = '/collections/all';
+      viewAll.textContent = 'View All Brands →';
+      viewAll.className = 'tsq-nav-view-all';
+      grid.appendChild(viewAll);
+      div.appendChild(grid);
+    } else {
+      items.forEach(item => {
+        const a = document.createElement('a');
+        a.href = item.href;
+        a.textContent = item.label;
+        div.appendChild(a);
+      });
+    }
     return div;
   }
 
