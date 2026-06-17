@@ -1,0 +1,50 @@
+/* TSQ Readability Patch v2 — compatibility shim, defers to scent-quarter-luxury.css */
+
+/* Ensure full-width header band */
+body #header-group,
+body .shopify-section-group-header-group {
+  background: #090807 !important;
+}
+
+body .shopify-section-header,
+body .section-header,
+body .header-wrapper,
+body .header,
+body #header-component,
+body header-component,
+body .shopify-section-announcement-bar,
+body .announcement-bar {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+}
+
+/* Ensure page background stays pearl */
+body, main, .content-for-layout, .shopify-section {
+  background: #FAF8F3 !important;
+}
+
+/* Footer always dark */
+.footer, footer, .footer-group {
+  background: #090807 !important;
+  color: #EFE5D2 !important;
+}
+
+/* Collection card text contrast */
+.collection-card a,
+.collection-card h3,
+.collection-card h4,
+.collection-card [class*='title'] {
+  text-shadow: 0 1px 6px rgba(9,8,7,.60) !important;
+}
+
+/* WCAG AA: Eyebrow text on light backgrounds (#1B1917 on #FAF8F3 = 15.7:1) */
+.tsq-eyebrow {
+  color: var(--tsq-charcoal, #1B1917) !important;
+}
+
+/* WCAG AA: Product card brand label on white (#7B6652 on #fff = 4.8:1) */
+.tsq-product-card__brand {
+  color: var(--tsq-mocha, #7B6652) !important;
+}
