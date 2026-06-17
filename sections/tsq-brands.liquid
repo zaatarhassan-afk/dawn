@@ -1,0 +1,122 @@
+{% comment %} TSQ — Explore The Houses v3 {% endcomment %}
+{% assign brands = "Lattafa,Afnan,Armaf,Rayhaan,Fragrance World,Rasasi,Maison Alhambra,Swiss Arabian,Khadlaj,Ahmed Al Maghribi,Gissah,Reef,Arabian Oud" | split: "," %}
+
+<section class="tsq-brands-section">
+  <div class="tsq-section-head">
+    <p class="tsq-eyebrow">Curated Fragrance Houses</p>
+    <h2 class="tsq-section-title">Explore The Houses</h2>
+    <div class="tsq-gold-rule"></div>
+  </div>
+  <div class="tsq-brands-grid">
+    {% for brand in brands %}
+      {% assign brand_name = brand | strip %}
+      {% assign brand_handle = brand_name | handleize %}
+      {% assign brand_collection = collections[brand_handle] %}
+      {% assign brand_url = brand_collection.url | default: "/collections/" | append: brand_handle %}
+      {% assign brand_img = nil %}
+      {% if brand_collection and brand_collection.products.size > 0 %}
+        {% assign brand_img = brand_collection.products.first.featured_image | image_url: width: 400 %}
+      {% endif %}
+      <a href="{{ brand_url }}" class="tsq-brand-card">
+        {% if brand_img %}
+          <div class="tsq-brand-card-img" style="background-image:url('{{ brand_img }}');"></div>
+          <div class="tsq-brand-card-overlay"></div>
+        {% else %}
+          <div class="tsq-brand-card-img tsq-brand-no-img"></div>
+        {% endif %}
+        <div class="tsq-brand-card-content">
+          <span class="tsq-brand-card-name">{{ brand_name }}</span>
+          <span class="tsq-brand-card-arrow">→</span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+.tsq-brands-section {
+  background: var(--tsq-pearl, #FAF8F3);
+  padding: 64px 20px;
+}
+.tsq-section-head { text-align: center; margin-bottom: 40px; }
+.tsq-eyebrow {
+  font-family: 'Manrope', sans-serif;
+  font-size: 11px; letter-spacing: 0.2em; color: var(--tsq-gold, #C6A15B) !important;
+  text-transform: uppercase; margin: 0 0 8px; display: block;
+}
+.tsq-section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px; color: var(--tsq-charcoal, #1B1917) !important;
+  font-weight: 400; margin: 0;
+}
+.tsq-gold-rule {
+  width: 48px; height: 1px;
+  background: #C9A96E; margin: 16px auto 0;
+}
+.tsq-brands-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+@media(max-width: 900px) { .tsq-brands-grid { grid-template-columns: repeat(3, 1fr); } }
+@media(max-width: 600px) { .tsq-brands-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.tsq-brand-card {
+  position: relative;
+  height: 160px;
+  background: var(--tsq-champagne, #EFE5D2);
+  border: 1px solid var(--tsq-stone, #D8C9B6);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex; align-items: flex-end;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.tsq-brand-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 14px 36px rgba(201,169,110,0.2);
+  border-color: rgba(201,169,110,0.5);
+}
+.tsq-brand-card-img {
+  position: absolute; inset: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+.tsq-brand-card:hover .tsq-brand-card-img { transform: scale(1.05); }
+.tsq-brand-no-img { background: linear-gradient(135deg, var(--tsq-champagne, #EFE5D2), var(--tsq-stone, #D8C9B6)); }
+.tsq-brand-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(0deg, rgba(13,13,13,0.85) 0%, rgba(13,13,13,0.1) 100%);
+}
+.tsq-brand-card-content {
+  position: relative; z-index: 2;
+  width: 100%; padding: 12px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tsq-brand-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; color: #FAF7F2 !important;
+  font-weight: 400; letter-spacing: 0.02em;
+}
+.tsq-brand-card-arrow {
+  color: #C9A96E !important; font-size: 16px;
+  opacity: 0; transform: translateX(-4px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.tsq-brand-card:hover .tsq-brand-card-arrow { opacity: 1; transform: translateX(0); }
+</style>
+
+{% schema %}
+{
+  "name": "TSQ Featured Brands",
+  "tag": "section",
+  "class": "shopify-section",
+  "presets": [
+    { "name": "TSQ Featured Brands" }
+  ]
+}
+{% endschema %}

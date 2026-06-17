@@ -1,0 +1,67 @@
+{% comment %} TSQ — Similar Fragrances via Shopify Recommendations API {% endcomment %}
+<section id="tsq-similar-section" class="tsq-similar-section" style="background:var(--tsq-champagne,#EFE5D2);padding:48px 0;border-top:1px solid var(--tsq-stone,#D8C9B6);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 40px;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px;">
+      <div>
+        <p style="font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:0.18em;color:var(--tsq-gold,#C6A15B);text-transform:uppercase;margin:0 0 4px;">Discover More</p>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--tsq-charcoal,#1B1917);font-weight:400;margin:0;">Similar Fragrances</h2>
+      </div>
+    </div>
+    <div class="tsq-house-grid" id="tsq-similar-grid">
+      <p style="color:var(--tsq-mocha,#7B6652);font-family:'Manrope',sans-serif;font-size:13px;grid-column:1/-1;">Loading recommendations…</p>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var productId = {{ product.id }};
+  var grid = document.getElementById('tsq-similar-grid');
+  if(!grid) return;
+
+  fetch('/recommendations/products.json?product_id=' + productId + '&limit=5&intent=related')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var products = data.products;
+      if(!products || products.length === 0){
+        var sec = document.getElementById('tsq-similar-section');
+        if(sec) sec.remove();
+        return;
+      }
+      grid.innerHTML = products.map(function(p){
+        var fb = p.variants && p.variants.find(function(v){ return v.title === 'Full Bottle'; });
+        var price = fb ? fb.price : p.price_min;
+        var priceFormatted = '$' + (price / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        var img = '';
+        if(p.featured_image){
+          var src = p.featured_image.src || '';
+          img = src.replace(/\.(jpg|jpeg|png|webp)(\?.*)?$/, '_300x300.$1');
+        }
+        var name = p.title.replace(p.vendor || '', '').trim();
+        return '<a href="' + p.url + '" class="tsq-house-card">' +
+          '<div class="tsq-house-card-img">' +
+            (img ? '<img src="' + img + '" alt="' + p.title.replace(/"/g, '') + '" loading="lazy" />' : '') +
+          '</div>' +
+          '<div class="tsq-house-card-info">' +
+            '<p style="font-family:\'Manrope\',sans-serif;font-size:10px;color:var(--tsq-gold,#C6A15B);letter-spacing:0.12em;text-transform:uppercase;margin:0 0 3px;">' + (p.vendor || '') + '</p>' +
+            '<p class="tsq-house-card-name">' + name + '</p>' +
+            '<p class="tsq-house-card-price">From ' + priceFormatted + '</p>' +
+          '</div>' +
+        '</a>';
+      }).join('');
+    })
+    .catch(function(){
+      var sec = document.getElementById('tsq-similar-section');
+      if(sec) sec.remove();
+    });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "TSQ Similar Products",
+  "tag": "section",
+  "class": "shopify-section",
+  "templates": ["product"]
+}
+{% endschema %}

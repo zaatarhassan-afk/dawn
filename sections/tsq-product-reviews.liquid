@@ -81,8 +81,8 @@
 
 <style>
 .tsq-reviews-section {
-  background: var(--tsq-obsidian, #0D0D0D);
-  border-top: 1px solid rgba(201,169,110,0.12);
+  background: var(--tsq-champagne, #EFE5D2);
+  border-top: 1px solid var(--tsq-stone, #D8C9B6);
   padding: 48px 0;
 }
 .tsq-reviews-inner {
@@ -97,7 +97,7 @@
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 400;
-  color: rgba(250,247,242,0.92);
+  color: var(--tsq-charcoal, #1B1917);
   letter-spacing: 0.03em;
   margin: 0;
 }
@@ -110,8 +110,8 @@
   .tsq-reviews-grid { grid-template-columns: 1fr; }
 }
 .tsq-rv-card {
-  background: var(--tsq-near-black, #1A1410);
-  border: 1px solid rgba(201,169,110,0.12);
+  background: #fff;
+  border: 1px solid var(--tsq-stone, #D8C9B6);
   border-radius: 8px;
   padding: 20px;
   display: flex;
@@ -119,7 +119,7 @@
   gap: 10px;
   transition: border-color 0.2s;
 }
-.tsq-rv-card:hover { border-color: rgba(201,169,110,0.3); }
+.tsq-rv-card:hover { border-color: rgba(198,161,91,0.4); }
 .tsq-rv-top {
   display: flex;
   justify-content: space-between;
@@ -130,30 +130,30 @@
   font-family: 'Manrope', sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
-  color: rgba(250,247,242,0.85);
+  color: var(--tsq-charcoal, #1B1917);
   letter-spacing: 0.04em;
 }
 .tsq-rv-date {
   font-family: 'Manrope', sans-serif;
   font-size: 0.72rem;
-  color: rgba(250,247,242,0.35);
+  color: var(--tsq-mocha, #7B6652);
 }
 .tsq-rv-stars { display: flex; gap: 2px; }
 .tsq-rv-star {
-  color: rgba(201,169,110,0.25);
+  color: rgba(198,161,91,0.25);
   font-size: 0.95rem;
 }
-.tsq-rv-star--on { color: #C9A96E; }
+.tsq-rv-star--on { color: var(--tsq-gold, #C6A15B); }
 .tsq-rv-text {
   font-family: 'Lora', Georgia, serif;
   font-size: 0.875rem;
-  color: rgba(250,247,242,0.7);
+  color: var(--tsq-mocha, #7B6652);
   line-height: 1.65;
   margin: 0;
 }
 .tsq-reviews-empty {
   font-family: 'Lora', Georgia, serif;
-  color: rgba(250,247,242,0.35);
+  color: var(--tsq-mocha, #7B6652);
   font-size: 0.9rem;
 }
 </style>

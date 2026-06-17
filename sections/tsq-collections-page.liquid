@@ -1,0 +1,126 @@
+<style>
+.tsq-coll-page { background: var(--tsq-pearl, #FAF8F3); padding: 60px 0 80px; min-height: 80vh; }
+.tsq-coll-page-header { text-align: center; padding: 0 20px 48px; }
+.tsq-coll-page-eyebrow {
+  font-family: 'Manrope', sans-serif; font-size: 11px; letter-spacing: 0.2em;
+  color: var(--tsq-gold, #C6A15B); text-transform: uppercase; margin: 0 0 10px;
+}
+.tsq-coll-page-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 44px; color: var(--tsq-charcoal, #1B1917);
+  font-weight: 400; margin: 0;
+}
+.tsq-coll-block { padding: 32px 0 20px; border-top: 1px solid var(--tsq-stone, #D8C9B6); }
+.tsq-coll-block:first-of-type { border-top: none; }
+.tsq-coll-block-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 0 40px 16px; max-width: 1400px; margin: 0 auto;
+}
+.tsq-coll-name {
+  font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--tsq-charcoal, #1B1917);
+  font-weight: 400; text-decoration: none;
+}
+.tsq-coll-name:hover { color: var(--tsq-gold, #C6A15B) !important; }
+.tsq-coll-count { font-family: 'Manrope', sans-serif; font-size: 11px; color: var(--tsq-mocha, #7B6652); letter-spacing: 0.1em; }
+.tsq-coll-shop-link {
+  font-family: 'Manrope', sans-serif; font-size: 11px; color: var(--tsq-gold, #C6A15B) !important;
+  letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+  border-bottom: 1px solid rgba(198,161,91,0.35); padding-bottom: 1px;
+}
+.tsq-coll-shop-link:hover { color: var(--tsq-amber, #A86F3C) !important; border-color: rgba(168,111,60,0.5); }
+.tsq-coll-carousel-wrap { overflow: hidden; padding: 0 40px; }
+.tsq-coll-carousel {
+  display: flex; gap: 14px; overflow-x: auto; scroll-behavior: smooth;
+  scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 4px;
+}
+.tsq-coll-carousel::-webkit-scrollbar { display: none; }
+.tsq-coll-card {
+  flex: 0 0 200px; background: #fff;
+  border: 1px solid var(--tsq-stone, #D8C9B6); border-radius: 3px;
+  overflow: hidden; text-decoration: none; display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.tsq-coll-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(27,25,23,0.08);
+  border-color: rgba(198,161,91,0.4);
+}
+.tsq-coll-card-img {
+  width: 100%; height: 200px; background: var(--tsq-champagne, #EFE5D2);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.tsq-coll-card-img img {
+  width: 100%; height: 100%; object-fit: contain; object-position: center;
+  transition: transform 0.4s ease;
+}
+.tsq-coll-card:hover .tsq-coll-card-img img { transform: scale(1.05); }
+.tsq-coll-card-info { padding: 10px 12px 12px; background: #fff; }
+.tsq-coll-card-vendor {
+  font-family: 'Manrope', sans-serif; font-size: 9px; color: var(--tsq-gold, #C6A15B);
+  letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 3px;
+}
+.tsq-coll-card-name {
+  font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--tsq-charcoal, #1B1917);
+  margin: 0 0 4px; line-height: 1.3;
+}
+.tsq-coll-card-price { font-family: 'Manrope', sans-serif; font-size: 12px; color: var(--tsq-mocha, #7B6652); }
+.tsq-coll-empty { font-family: 'Lora', serif; font-size: 14px; color: var(--tsq-mocha, #7B6652); padding: 0 40px; font-style: italic; }
+</style>
+
+<div class="tsq-coll-page">
+  <div class="tsq-coll-page-header">
+    <p class="tsq-coll-page-eyebrow">Browse Our World</p>
+    <h1 class="tsq-coll-page-title">All Collections</h1>
+  </div>
+
+  {% for collection in collections %}
+    {% unless collection.handle == 'frontpage' %}
+    <div class="tsq-coll-block">
+      <div class="tsq-coll-block-header">
+        <div>
+          <a href="{{ collection.url }}" class="tsq-coll-name">{{ collection.title }}</a>
+          <span class="tsq-coll-count">&ensp;({{ collection.products_count }})</span>
+        </div>
+        <a href="{{ collection.url }}" class="tsq-coll-shop-link">Shop All →</a>
+      </div>
+      {% if collection.products_count > 0 %}
+        <div class="tsq-coll-carousel-wrap">
+          <div class="tsq-coll-carousel">
+            {% for product in collection.products limit: 10 %}
+              {% assign full_bottle = nil %}
+              {% for v in product.variants %}
+                {% if v.title == 'Full Bottle' %}{% assign full_bottle = v %}{% break %}{% endif %}
+              {% endfor %}
+              <a href="{{ product.url }}" class="tsq-coll-card">
+                <div class="tsq-coll-card-img">
+                  {% if product.featured_image %}
+                    <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title | escape }}" loading="lazy" />
+                  {% endif %}
+                </div>
+                <div class="tsq-coll-card-info">
+                  <p class="tsq-coll-card-vendor">{{ product.vendor }}</p>
+                  <p class="tsq-coll-card-name">{{ product.title | truncate: 28 }}</p>
+                  <p class="tsq-coll-card-price">
+                    {% if full_bottle %}{{ full_bottle.price | money }}{% else %}From {{ product.price_min | money }}{% endif %}
+                  </p>
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <p class="tsq-coll-empty">No products yet in this collection.</p>
+      {% endif %}
+    </div>
+    {% endunless %}
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "TSQ Collections Page",
+  "tag": "section",
+  "class": "shopify-section",
+  "settings": [],
+  "presets": [{ "name": "TSQ Collections Page" }]
+}
+{% endschema %}

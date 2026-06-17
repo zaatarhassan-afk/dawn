@@ -1,0 +1,104 @@
+{% comment %} TSQ — More from this house {% endcomment %}
+{% assign house_collection_handle = product.vendor | handleize %}
+{% assign house_products = collections[house_collection_handle].products %}
+
+{% if house_products.size > 1 %}
+<section class="tsq-house-section" style="background:var(--tsq-pearl,#FAF8F3);padding:48px 0;border-top:1px solid var(--tsq-stone,#D8C9B6);">
+  <div class="tsq-house-inner" style="max-width:1200px;margin:0 auto;padding:0 40px;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px;">
+      <div>
+        <p style="font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:0.18em;color:var(--tsq-gold,#C6A15B);text-transform:uppercase;margin:0 0 4px;">The House of</p>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--tsq-charcoal,#1B1917);font-weight:400;margin:0;">{{ product.vendor }}</h2>
+      </div>
+      <a href="/collections/{{ house_collection_handle }}" style="font-family:'Manrope',sans-serif;font-size:11px;color:var(--tsq-gold,#C6A15B);letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid rgba(198,161,91,0.35);">View All →</a>
+    </div>
+    <div class="tsq-house-grid">
+      {% for p in house_products limit: 6 %}
+        {% unless p.handle == product.handle %}
+          {% assign fb = nil %}
+          {% for v in p.variants %}{% if v.title == 'Full Bottle' %}{% assign fb = v %}{% break %}{% endif %}{% endfor %}
+          <a href="{{ p.url }}" class="tsq-house-card">
+            <div class="tsq-house-card-img">
+              {% if p.featured_image %}
+                <img src="{{ p.featured_image | image_url: width: 300 }}" alt="{{ p.title | escape }}" loading="lazy" />
+              {% endif %}
+            </div>
+            <div class="tsq-house-card-info">
+              <p class="tsq-house-card-name">{{ p.title | remove: p.vendor | strip }}</p>
+              <p class="tsq-house-card-price">{% if fb %}{{ fb.price | money }}{% else %}From {{ p.price_min | money }}{% endif %}</p>
+            </div>
+          </a>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+.tsq-house-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+@media(max-width: 900px) { .tsq-house-grid { grid-template-columns: repeat(3, 1fr); } }
+@media(max-width: 560px) { .tsq-house-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.tsq-house-card {
+  text-decoration: none;
+  background: #fff;
+  border: 1px solid var(--tsq-stone, #D8C9B6);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.tsq-house-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(27,25,23,0.08);
+  border-color: rgba(198,161,91,0.4);
+}
+.tsq-house-card-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--tsq-champagne, #EFE5D2);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.tsq-house-card-img img {
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: center;
+  transition: transform 0.4s ease;
+}
+.tsq-house-card:hover .tsq-house-card-img img { transform: scale(1.05); }
+.tsq-house-card-info {
+  padding: 10px 12px 12px;
+  flex: 1;
+  display: flex; flex-direction: column;
+  background: #fff;
+}
+.tsq-house-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px; color: var(--tsq-charcoal, #1B1917);
+  margin: 0 0 5px; line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.tsq-house-card-price {
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px; color: var(--tsq-mocha, #7B6652);
+  margin: auto 0 0;
+}
+</style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "TSQ House Products",
+  "tag": "section",
+  "class": "shopify-section",
+  "templates": ["product"]
+}
+{% endschema %}

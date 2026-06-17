@@ -1,0 +1,163 @@
+{% comment %} TSQ Shop by Collection — v3 {% endcomment %}
+{% comment %}
+  Lifestyle categories: oud, fresh-aquatic, oriental-amber, floral-rose, gourmand-sweet
+  Product-image categories: masculine, feminine, unisex, all-decants
+{% endcomment %}
+
+{% assign lifestyle_handles = "oud,fresh-aquatic,oriental-amber,floral-rose,gourmand-sweet" | split: "," %}
+
+<section class="tsq-cg-section">
+  <div class="tsq-section-head">
+    <p class="tsq-eyebrow">Shop by Category</p>
+    <h2 class="tsq-section-title">{{ section.settings.title | default: 'Find Your Scent' }}</h2>
+  </div>
+  <div class="tsq-cg-grid">
+
+    {% comment %} masculine {% endcomment %}
+    {% assign coll = collections['masculine'] %}
+    {% assign prod_img = '' %}
+    {% if coll and coll.products.size > 0 %}{% assign prod_img = coll.products.first.featured_image | image_url: width: 800 %}{% endif %}
+    <a href="{{ coll.url | default: '/collections/masculine' }}" class="tsq-cg-tile" {% if prod_img != '' %}style="--tile-bg: url('{{ prod_img }}')"{% else %}style="--tile-bg: url('https://images.unsplash.com/photo-1594035910387-fea47794261f?w=800&q=85')"{% endif %}>
+      <div class="tsq-cg-bg"></div><div class="tsq-cg-overlay"></div>
+      <div class="tsq-cg-content"><span class="tsq-cg-label">Men's Fragrances</span><span class="tsq-cg-cta">Shop Now →</span></div>
+    </a>
+
+    {% comment %} feminine {% endcomment %}
+    {% assign coll = collections['feminine'] %}
+    {% assign prod_img = '' %}
+    {% if coll and coll.products.size > 0 %}{% assign prod_img = coll.products.first.featured_image | image_url: width: 800 %}{% endif %}
+    <a href="{{ coll.url | default: '/collections/feminine' }}" class="tsq-cg-tile" {% if prod_img != '' %}style="--tile-bg: url('{{ prod_img }}')"{% else %}style="--tile-bg: url('https://images.unsplash.com/photo-1541643600914-78b084683702?w=800&q=85')"{% endif %}>
+      <div class="tsq-cg-bg"></div><div class="tsq-cg-overlay"></div>
+      <div class="tsq-cg-content"><span class="tsq-cg-label">Women's Fragrances</span><span class="tsq-cg-cta">Shop Now →</span></div>
+    </a>
+
+    {% comment %} unisex {% endcomment %}
+    {% assign coll = collections['unisex'] %}
+    {% assign prod_img = '' %}
+    {% if coll and coll.products.size > 0 %}{% assign prod_img = coll.products.first.featured_image | image_url: width: 800 %}{% endif %}
+    <a href="{{ coll.url | default: '/collections/unisex' }}" class="tsq-cg-tile" {% if prod_img != '' %}style="--tile-bg: url('{{ prod_img }}')"{% else %}style="--tile-bg: url('https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=800&q=85')"{% endif %}>
+      <div class="tsq-cg-bg"></div><div class="tsq-cg-overlay"></div>
+      <div class="tsq-cg-content"><span class="tsq-cg-label">Unisex</span><span class="tsq-cg-cta">Shop Now →</span></div>
+    </a>
+
+    {% comment %} oud — lifestyle {% endcomment %}
+    {% assign coll = collections['oud'] %}
+    <a href="{{ coll.url | default: '/collections/oud' }}" class="tsq-cg-tile" style="--tile-bg: url('https://images.unsplash.com/photo-1595535873420-a599195b3f4a?w=800&q=85')">
+      <div class="tsq-cg-bg"></div><div class="tsq-cg-overlay"></div>
+      <div class="tsq-cg-content"><span class="tsq-cg-label">Oud Collection</span><span class="tsq-cg-cta">Shop Now →</span></div>
+    </a>
+
+    {% comment %} fresh-aquatic — lifestyle {% endcomment %}
+    {% assign coll = collections['fresh-aquatic'] %}
+    <a href="{{ coll.url | default: '/collections/fresh-aquatic' }}" class="tsq-cg-tile" style="--tile-bg: url('https://images.unsplash.com/photo-1546173159-315724a31696?w=800&q=85')">
+      <div class="tsq-cg-bg"></div><div class="tsq-cg-overlay"></div>
+      <div class="tsq-cg-content"><span class="tsq-cg-label">Fresh & Citrus</span><span class="tsq-cg-cta">Shop Now →</span></div>
+    </a>
+
+    {% comment %} oriental-amber — lifestyle {% endcomment %}
+    {% assign coll = collections['oriental-amber'] %}
+    <a href="{{ coll.url | default: '/collections/oriental-amber' }}" class="tsq-cg-tile" style="--tile-bg: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=85')">
+      <div class="tsq-cg-bg"></div><div class="tsq-cg-overlay"></div>
+      <div class="tsq-cg-content"><span class="tsq-cg-label">Oriental & Amber</span><span class="tsq-cg-cta">Shop Now →</span></div>
+    </a>
+
+    {% comment %} floral-rose — lifestyle {% endcomment %}
+    {% assign coll = collections['floral-rose'] %}
+    <a href="{{ coll.url | default: '/collections/floral-rose' }}" class="tsq-cg-tile" style="--tile-bg: url('https://images.unsplash.com/photo-1490750967868-88df5691cc95?w=800&q=85')">
+      <div class="tsq-cg-bg"></div><div class="tsq-cg-overlay"></div>
+      <div class="tsq-cg-content"><span class="tsq-cg-label">Floral & Rose</span><span class="tsq-cg-cta">Shop Now →</span></div>
+    </a>
+
+    {% comment %} gourmand-sweet — lifestyle {% endcomment %}
+    {% assign coll = collections['gourmand-sweet'] %}
+    <a href="{{ coll.url | default: '/collections/gourmand-sweet' }}" class="tsq-cg-tile" style="--tile-bg: url('https://images.unsplash.com/photo-1575510268736-a68e36e4e34c?w=800&q=85')">
+      <div class="tsq-cg-bg"></div><div class="tsq-cg-overlay"></div>
+      <div class="tsq-cg-content"><span class="tsq-cg-label">Sweet & Vanilla</span><span class="tsq-cg-cta">Shop Now →</span></div>
+    </a>
+
+    {% comment %} all-decants — product images {% endcomment %}
+    {% assign coll = collections['all-decants'] %}
+    {% assign prod_img = '' %}
+    {% if coll and coll.products.size > 0 %}{% assign prod_img = coll.products.first.featured_image | image_url: width: 800 %}{% endif %}
+    <a href="{{ coll.url | default: '/collections/all-decants' }}" class="tsq-cg-tile" {% if prod_img != '' %}style="--tile-bg: url('{{ prod_img }}')"{% else %}style="--tile-bg: url('https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&q=85')"{% endif %}>
+      <div class="tsq-cg-bg"></div><div class="tsq-cg-overlay"></div>
+      <div class="tsq-cg-content"><span class="tsq-cg-label">All Decants</span><span class="tsq-cg-cta">Shop Now →</span></div>
+    </a>
+
+  </div>
+</section>
+
+<style>
+.tsq-cg-section {
+  background: var(--tsq-pearl, #FAF8F3);
+  padding: 64px 20px;
+}
+.tsq-section-head { text-align: center; margin-bottom: 40px; }
+.tsq-cg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+@media(max-width: 768px) { .tsq-cg-grid { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width: 480px) { .tsq-cg-grid { grid-template-columns: 1fr 1fr; gap: 8px; } }
+
+.tsq-cg-tile {
+  position: relative; height: 280px;
+  border-radius: 3px; overflow: hidden;
+  display: block; text-decoration: none; cursor: pointer;
+}
+@media(max-width: 480px) { .tsq-cg-tile { height: 170px; } }
+
+.tsq-cg-bg {
+  position: absolute; inset: 0;
+  background-image: var(--tile-bg, linear-gradient(135deg, var(--tsq-champagne, #EFE5D2), var(--tsq-stone, #D8C9B6)));
+  background-size: cover; background-position: center;
+  transition: transform 0.5s cubic-bezier(0.25,0.8,0.25,1);
+}
+.tsq-cg-tile:hover .tsq-cg-bg { transform: scale(1.06); }
+
+.tsq-cg-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(13,13,13,0.75) 100%);
+  transition: background 0.3s ease;
+}
+.tsq-cg-tile:hover .tsq-cg-overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,0.04) 0%, rgba(13,13,13,0.55) 100%);
+}
+.tsq-cg-content {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: flex-start; justify-content: flex-end;
+  padding: 18px 20px;
+}
+.tsq-cg-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: #FAF7F2 !important;
+  font-weight: 500; display: block;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+  margin-bottom: 4px;
+}
+@media(max-width: 480px) { .tsq-cg-label { font-size: 16px; } }
+.tsq-cg-cta {
+  font-family: 'Manrope', sans-serif;
+  font-size: 11px; color: #C9A96E !important; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.tsq-cg-tile:hover .tsq-cg-cta { opacity: 1; transform: translateY(0); }
+</style>
+
+{% schema %}
+{
+  "name": "TSQ Collections Grid",
+  "tag": "section",
+  "class": "shopify-section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Section title", "default": "Find Your Scent" }
+  ],
+  "presets": [{ "name": "TSQ Collections Grid" }]
+}
+{% endschema %}
