@@ -296,6 +296,10 @@
       "type": "tsq-product-enhancements",
       "settings": {}
     },
+    "tsq-product-reviews": {
+      "type": "tsq-product-reviews",
+      "settings": {}
+    },
     "tsq-house-products": {
       "type": "tsq-house-products",
       "settings": {}
@@ -449,6 +453,7 @@
   "order": [
     "main",
     "tsq-product-enhancements",
+    "tsq-product-reviews",
     "tsq-house-products",
     "tsq-similar-products",
     "product_recommendations_qggXJq"
