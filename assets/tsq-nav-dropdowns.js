@@ -4,20 +4,23 @@
 
   const NAV_DROPDOWNS = {
     'Shop All': [
-      { label: 'All Fragrances',     href: '/collections/all-decants' },
-      { label: 'New Arrivals',       href: '/collections/all-decants?sort_by=created-descending' },
-      { label: 'Best Sellers',       href: '/collections/all-decants?sort_by=best-selling' },
+      { label: 'All Fragrances',     href: '/collections/all' },
+      { label: 'New Arrivals',       href: '/collections/all?sort_by=created-descending' },
+      { label: 'Best Sellers',       href: '/collections/all?sort_by=best-selling' },
     ],
     'Brands': [
       { label: 'Afnan',              href: '/collections/afnan' },
       { label: 'Ahmed Al Maghribi',  href: '/collections/ahmed-al-maghribi' },
       { label: 'Armaf',              href: '/collections/armaf' },
       { label: 'Arabian Oud',        href: '/collections/arabian-oud' },
+      { label: 'Emir',               href: '/collections/emir' },
       { label: 'Fragrance World',    href: '/collections/fragrance-world' },
       { label: 'Gissah',             href: '/collections/gissah' },
+      { label: 'Ibraq',              href: '/collections/ibraq' },
       { label: 'Khadlaj',            href: '/collections/khadlaj' },
       { label: 'Lattafa',            href: '/collections/lattafa' },
       { label: 'Maison Alhambra',    href: '/collections/maison-alhambra' },
+      { label: 'Paris Corner',       href: '/collections/paris-corner' },
       { label: 'Rasasi',             href: '/collections/rasasi' },
       { label: 'Rayhaan',            href: '/collections/rayhaan' },
       { label: 'Reef',               href: '/collections/reef' },
